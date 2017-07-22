@@ -1,0 +1,92 @@
+@keyframes slideDown {
+    0% {
+        top:-500px;
+            transform: translateX(-50%);
+    }
+
+    100% {
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+}
+
+#login-container {
+    height: 400px;
+    width: 400px;
+    margin: auto;
+    background-color: #8A2BE2;
+    animation: slideDown 1s;
+    animation-fill-mode: forwards;
+    position: fixed;
+    left: 50%;
+    border: 2px solid transparent;
+    border-radius: 25px;
+    z-index: 1;
+    text-align: center;
+    color: #FFF;
+    font-family: cursive;
+
+    >* {
+        position: relative;
+    }
+
+    #app-name {
+        top: 15%;
+        font-size: 24px;
+
+        span {
+            padding-left:5px;
+        }
+    }
+
+    #userdetails-container {
+        top: 35%;
+
+        span {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        input {
+            background-color: transparent;
+            outline: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 2px solid #FFF;
+            width: 200px;
+            color: #FFF;
+            font-family: cursive;
+        }
+
+        input:focus {
+            @extend input;
+        }
+    }
+
+    #duplicate-nickname-alert {
+        top: 41%;
+        color: #FF7F00;
+    }
+
+    #tech-stack {
+        top: 60%;
+        display: flex;
+        justify-content: space-around;
+
+        span {
+            color: #FFF;
+            padding-top: 2px;
+        }
+
+        img {
+            height: 30px;
+        }
+    }
+
+    #tech-stack.slideup {
+        top: 54%;
+    }
+
+}

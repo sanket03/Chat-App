@@ -1,0 +1,24 @@
+@import 'chatUtilities';
+@import 'messageContainer';
+
+#chat-container {
+    border: 2px solid transparent;
+    color: #000;
+    font-family: 'Segoe UI', sans-serif;
+    height: 70%;
+    width: 60%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+
+    >.row {
+        height: 100%;
+    }
+
+    .col-md-3 {
+        background-color: #8A2BE2;
+        color: #FFF;
+        border-radius: 8px;
+    }
+}
