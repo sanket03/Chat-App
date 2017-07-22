@@ -1,11 +1,14 @@
 # Chat-App
 Chat Application based on socket.io with Express
+
 Front End: React with Redux
 
 To Run:
 1. Chat Client:
+
    npm install
    npm run start
+   
    Browse localhost:8080 on your machine
 
 2. Chat Service:
