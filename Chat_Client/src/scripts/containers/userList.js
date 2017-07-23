@@ -10,24 +10,23 @@ class UserList extends React.Component {
     constructor(props) {
         super(props);
         this.socket = config.socket;
-        this.url = config.url;
     }
 
     componentDidMount() {
         let {updateActiveUsersList, initializeActiveUsersList, nickname} = this.props;
 
-        // Fetch current list of active users
-        fetch(this.url + '/api/getActiveUsersList', {method: 'get'})
-            .then((res) => {
-                res.json().then((usersList) => {
-                        initializeActiveUsersList(usersList, nickname);
-                }) 
-            });
+        // Set active users list
+        this.socket.on('setActiveUsersList', (usersList) => {
+            initializeActiveUsersList(usersList, nickname);
+        });
         
-        // update active user list on client side
+        // Update active user list on client side
         this.socket.on('newUserJoined', (connectedUser) => {
             updateActiveUsersList(connectedUser);
         });
+
+        // Fetch current list of active users
+        this.socket.emit('getActiveUsersList');
     }
 
     render() {
@@ -39,7 +38,7 @@ class UserList extends React.Component {
 
 const mapStateToProps  = ({userListReducer,loginReducer}) =>  {
     return {
-        activeUsersList: userListReducer.activeUsers,
+        activeUsersList: [...userListReducer.activeUsers],
         nickname: loginReducer.nickname
     }
 }
@@ -62,6 +61,5 @@ UserList.propTypes = {
     initializeActiveUsersList: PropTypes.func,
     updateActiveUsersList: PropTypes.func
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

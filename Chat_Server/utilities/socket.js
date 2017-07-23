@@ -9,15 +9,16 @@ chat.io = socket;
 chat.io.on('connection',(client) => {
 
     // Create a new room for the user
-    client.on('setNickname',(nickname) => {loginEvents.setNickname(nickname, client, chat);})
+    client.on('setNickname', (nickname) => { loginEvents.setNickname(nickname, client, chat); })
  
+    // Get the list of active clients
+    client.on('getActiveUsersList', () => { loginEvents.getActiveUsersList(client,chat); })
+
     client.on('clientMessage', (msg) => {
         client.broadcast.emit('serverMessage',msg);
     })
 
-    client.on('disconnect',() => {
-        chat.io.emit('serverMessage','client is disconnected');
-    })
+    client.on('disconnect',() => {})
 })
 
 module.exports = chat;

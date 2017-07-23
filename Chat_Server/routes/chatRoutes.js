@@ -1,10 +1,9 @@
-const express = require('express'),
-      chat = require('../utilities/socket');
+const express = require('express');
 
 const router = express.Router();
 
-router.get('/getActiveUsersList', (req,res) => {
-    res.send(chat.userList);
+router.get('/', (req,res) => {
+    // Send response here
 });
 
 module.exports = router;
