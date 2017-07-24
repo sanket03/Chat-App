@@ -3,22 +3,22 @@ const socket = require('socket.io')(),
       chatroomEvents = require('./chatroomEvents')(),
       chat = {};
 
-chat.userList = [];
+chat.userList = new Set();
 chat.io = socket;
 
 chat.io.on('connection',(client) => {
 
     // Create a new room for the user
-    client.on('setNickname', (nickname) => { loginEvents.setNickname(nickname, client, chat); })
+    client.on('setNickname', (nickname) => { loginEvents.setNickname(nickname, client, chat); });
  
     // Get the list of active clients
-    client.on('getActiveUsersList', () => { loginEvents.getActiveUsersList(client,chat); })
+    client.on('getActiveUsersList', () => { loginEvents.getActiveUsersList(client,chat); });
 
     client.on('clientMessage', (msg) => {
         client.broadcast.emit('serverMessage',msg);
-    })
+    });
 
-    client.on('disconnect',() => {})
+    client.on('disconnecting',() => { chatroomEvents.userLeft(client); });
 })
 
 module.exports = chat;
