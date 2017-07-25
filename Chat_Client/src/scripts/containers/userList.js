@@ -13,19 +13,34 @@ class UserList extends React.Component {
     }
 
     componentDidMount() {
-        let {updateActiveUsersList, initializeActiveUsersList, nickname} = this.props;
+        let { addUserToActiveUsersList, 
+              removeUserFromActiveUsersList, 
+              initializeActiveUsersList, 
+              addUserToGroup,
+              removeUserFromGroup,
+              nickname } = this.props;
 
         // Set active users list
-        this.socket.on('setActiveUsersList', (usersList) => {
+        // Add user to default group
+        this.socket.on('setActiveUsersList', (groupName, usersList) => {
             initializeActiveUsersList(usersList, nickname);
+            addUserToGroup(groupName, usersList);    
         });
         
-        // Update active user list on client side
-        this.socket.on('newUserJoined', (connectedUser) => {
-            updateActiveUsersList(connectedUser);
+        // Update active users list when a new user gets connected
+        // Add user to default group
+        this.socket.on('newUserJoined', (groupName, connectedUser) => {
+            addUserToActiveUsersList(connectedUser);
+            addUserToGroup(groupName, [connectedUser]); 
         });
 
-        // Fetch current list of active users
+        // Update active users list when user is disconnected
+        this.socket.on('userDisconnected', (groupsList, nickname) => {
+            removeUserFromActiveUsersList(nickname);
+            removeUserFromGroup(groupsList, nickname);
+        });
+
+        // Fetch list of active users
         this.socket.emit('getActiveUsersList');
     }
 
@@ -45,11 +60,24 @@ const mapStateToProps  = ({userListReducer,loginReducer}) =>  {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateActiveUsersList: (connectedUser) => {
-            dispatch(actions.updateActiveUsersList(connectedUser));
+        addUserToActiveUsersList: (connectedUser) => {
+            dispatch(actions.addUserToActiveUsersList(connectedUser));
         },
+
         initializeActiveUsersList: (usersList,nickname) => {
             dispatch(actions.initializeActiveUsersList(usersList,nickname));
+        },
+
+        removeUserFromActiveUsersList: (nickname) => {
+            dispatch(actions.removeUserFromActiveUsersList(nickname));
+        },
+
+        addUserToGroup: (groupName, usersList) => {
+            dispatch(actions.addUserToGroup(groupName, usersList));
+        },
+
+        removeUserFromGroup: (groupsList, nickname) => {
+            dispatch(actions.removeUserFromGroup(groupsList, nickname));
         }
     } 
 }
@@ -59,7 +87,10 @@ UserList.propTypes = {
     nickname: PropTypes.string,
     activeUsersList: PropTypes.array,
     initializeActiveUsersList: PropTypes.func,
-    updateActiveUsersList: PropTypes.func
+    addUserToActiveUsersList: PropTypes.func,
+    removeUserFromActiveUsersList: PropTypes.func,
+    addUserToGroup: PropTypes.func,
+    removeUserFromGroup: PropTypes.func
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

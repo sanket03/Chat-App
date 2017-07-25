@@ -12,13 +12,13 @@ chat.io.on('connection',(client) => {
     client.on('setNickname', (nickname) => { loginEvents.setNickname(nickname, client, chat); });
  
     // Get the list of active clients
-    client.on('getActiveUsersList', () => { loginEvents.getActiveUsersList(client,chat); });
+    client.on('getActiveUsersList', () => { loginEvents.getActiveUsersList(client, chat); });
 
     client.on('clientMessage', (msg) => {
         client.broadcast.emit('serverMessage',msg);
     });
 
-    client.on('disconnecting',() => { chatroomEvents.userLeft(client); });
+    client.on('disconnecting', () => { chatroomEvents.userDisconnected(client, chat); });
 })
 
 module.exports = chat;
