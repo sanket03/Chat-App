@@ -1,0 +1,32 @@
+#conversations-container {
+    text-align: center;
+
+    > span {
+        font-weight: 600;
+    }
+
+    > div {
+        margin-top: 10px;
+    }
+
+    ul {
+        text-align: left;
+        margin: 0;
+        font-size: 0.95em;
+        cursor: pointer;
+
+        li:hover {
+            color: #7FFF2A;
+            font-weight: 600;
+        }
+    }
+
+    #group-list-container { 
+        padding: 5px 0 5px 23px;
+        font-style: italic;
+    }
+
+    #friend-list-container {
+        padding: 5px 0 5px 42px;
+    }
+}
