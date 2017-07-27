@@ -8,9 +8,9 @@ const actions = (() => {
         }),
 
         // Add user to group
-        addUserToGroup: (groupName, usersList) => ({
+        addUserToGroup: (groupName, groupId, usersList) => ({
             type: 'ADD_USER_TO_GROUP',
-            payload: {groupName, usersList}
+            payload: {groupName, groupId, usersList}
         }),
 
         // Remove user from group

@@ -3,7 +3,7 @@ const socket = require('socket.io')(),
       chatroomEvents = require('./chatroomEvents')(),
       chat = {};
 
-chat.userList = new Set();
+chat.userList = new Map();
 chat.io = socket;
 
 chat.io.on('connection',(client) => {

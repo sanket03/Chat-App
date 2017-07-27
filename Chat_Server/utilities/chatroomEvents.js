@@ -3,11 +3,20 @@ module.exports = chatroomEvents = () => {
 
         // Emit event to the server notifying user has disconnected
         userDisconnected: (client, {userList}) => {
-            let roomsList =  Object.keys(client.rooms),
-                disconnectedUser =  roomsList[0];
+            let disconnectedUser,
+                roomsList =  Object.keys(client.rooms);
+
+            for(let [key,value] of userList) {
+                if(userList.get(key) === client.id) {
+                    disconnectedUser = key;
+                    break;
+                }
+            }
+            
             roomsList = roomsList.filter((room) => 
-                room !== disconnectedUser
+                room !== userList.get(disconnectedUser)
             );
+
             userList.delete(disconnectedUser);
             client.broadcast.emit('userDisconnected', roomsList, disconnectedUser);
         }

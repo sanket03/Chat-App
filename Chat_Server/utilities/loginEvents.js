@@ -1,6 +1,7 @@
 const loginEvents = () => {
 
-    const defaultGroup = 'Hall of Chatter';
+    const defaultGroup = 'Hall of Chatter',
+          defaultId = 'z-1111111';
 
     // Check whether a nickname is unique
     // Function is pure :) 
@@ -11,8 +12,8 @@ const loginEvents = () => {
     }
 
     // Add new user to active user list
-    let addUserToActiveUsersList = (nickname, userList) => {
-        userList.add(nickname);
+    let addUserToActiveUsersList = (clientId, nickname, userList) => {
+        userList.set(nickname,clientId);
     }
     
     return {
@@ -20,18 +21,16 @@ const loginEvents = () => {
             let shouldRedirectUser = checkNickname(nickname, userList);
 
             if(shouldRedirectUser) {
-                client.join(nickname);
-                client.join(defaultGroup);
-                addUserToActiveUsersList(nickname,userList);
-                client.broadcast.emit('newUserJoined', defaultGroup, nickname);
+                client.join(defaultId);
+                client.join('test-room');
+                addUserToActiveUsersList(client.id, nickname, userList);
+                client.broadcast.emit('newUserJoined', defaultGroup, defaultId, nickname);
             }
-
             client.emit('redirectUser', shouldRedirectUser, nickname);
-            client.leave(client.id);
          },
 
         getActiveUsersList: (client,{userList}) => {
-            client.emit('setActiveUsersList', defaultGroup, [...userList]);
+            client.emit('setActiveUsersList', defaultGroup, defaultId, [...userList.keys()]);
         }
     }
 }
