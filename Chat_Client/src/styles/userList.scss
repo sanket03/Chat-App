@@ -1,32 +1,59 @@
-#conversations-container {
+#conversations-tab {
     text-align: center;
 
-    > span {
-        font-weight: 600;
-    }
-
-    > div {
-        margin-top: 10px;
-    }
-
-    ul {
-        text-align: left;
-        margin: 0;
-        font-size: 0.95em;
+    > button {
+        background-color: #8A2BE2;
+        width: 200px;
         cursor: pointer;
+        margin-top: 10px;
+        font-weight: 600;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border: none;
+    }
 
-        li:hover {
-            color: #7FFF2A;
+    > button:focus {
+        box-shadow: 0 0;
+    }
+
+    #conversations-container {
+        text-align: center;
+        background-color: #8A2BE2;
+        color: #FFF;
+        border-radius: 8px;
+        padding: 0;
+        width: 250px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+
+        > span {
             font-weight: 600;
         }
-    }
 
-    #group-list-container { 
-        padding: 5px 0 5px 23px;
-        font-style: italic;
-    }
+        > div {
+            margin-top: 10px;
+        }
 
-    #friend-list-container {
-        padding: 5px 0 5px 42px;
+        ul {
+            text-align: left;
+            margin: 0;
+            font-size: 0.95em;
+            cursor: pointer;
+
+            li:hover {
+                color: #7FFF2A;
+                font-weight: 600;
+            }
+        }
+
+        #group-list-container { 
+            padding: 5px 0 5px 23px;
+            font-style: italic;
+        }
+
+        #friend-list-container {
+            padding: 5px 0 5px 42px;
+        }
     }
 }
+

@@ -28,7 +28,6 @@ const UserListInterface = (props) => {
 
     return (
         <div id = 'conversations-container'>
-            <span>Conversations</span>
             <div id = 'list-containers'>
                 <ul type = 'none' id = 'group-list-container'>
                     {props.defaultGroup.length > 0 ? renderGroupsList(userGroups) : ''}

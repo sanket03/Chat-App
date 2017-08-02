@@ -1,3 +1,33 @@
+@media (min-width: 320px) and (max-width: 420px), (orientation:landscape) {
+    #login-container {
+        height: 300px;
+        width: 300px; 
+
+        #userdetails-container {
+            top:30%;
+        }
+
+        #tech-stack {
+            top: 46%;
+        }
+    }
+}
+
+@media (min-width: 420px) and (min-height: 420px) {
+    #login-container {
+        height: 400px;
+        width: 400px; 
+
+        #userdetails-container {
+            top:35%;
+        }
+
+        #tech-stack {
+            top: 60%;
+        }
+    }
+}
+
 @keyframes slideDown {
     0% {
         top:-500px;
@@ -11,8 +41,6 @@
 }
 
 #login-container {
-    height: 400px;
-    width: 400px;
     margin: auto;
     background-color: #8A2BE2;
     animation: slideDown 1s;
@@ -40,8 +68,6 @@
     }
 
     #userdetails-container {
-        top: 35%;
-
         span {
             display: block;
             font-size: 18px;
@@ -71,7 +97,6 @@
     }
 
     #tech-stack {
-        top: 60%;
         display: flex;
         justify-content: space-around;
 
@@ -88,5 +113,4 @@
     #tech-stack.slideup {
         top: 54%;
     }
-
 }

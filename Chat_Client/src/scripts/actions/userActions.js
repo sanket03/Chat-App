@@ -19,6 +19,11 @@ const actions = (() => {
             payload: {groupsList, nickname}
         }),
 
+        // Toggle collapse for conversations tab
+        toggleCollapse: () => ({
+            type: 'TOGGLE_COLLAPSE'
+        }),
+
         // UpdateChatRoom with messages
         updateChatRoom: (msg) => ({
             type: 'UPDATE_CHAT_ROOM',

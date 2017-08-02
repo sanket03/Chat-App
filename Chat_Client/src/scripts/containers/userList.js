@@ -53,9 +53,9 @@ class UserList extends React.Component {
     }
 }
 
-const mapStateToProps  = ({userGroupsReducer,loginReducer}) =>  {
+const mapStateToProps  = ({conversationListReducer,loginReducer}) => {
     return {
-        userGroups: userGroupsReducer.userGroups,
+        userGroups: conversationListReducer.userGroups,
         nickname: loginReducer.nickname
     }
 }

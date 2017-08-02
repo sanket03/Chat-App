@@ -1,4 +1,4 @@
-const userGroupsReducer = (state = {userGroups: {}}, action) => {
+const conversationListReducer = (state = {isCollapsed: true, userGroups: {}}, action) => {
 
     switch(action.type) {
 
@@ -22,6 +22,7 @@ const userGroupsReducer = (state = {userGroups: {}}, action) => {
             intendedGroup.set('members', updatedMembers);
             userGroups[groupName] = intendedGroup;
             nextState = {
+                ...state,
                 userGroups: userGroups
             }
             return nextState;
@@ -32,6 +33,7 @@ const userGroupsReducer = (state = {userGroups: {}}, action) => {
                 {groupsList, nickname} = action.payload;
 
                 userGroups = {...state.userGroups};
+
                 for(let group in userGroups) {
                     if(userGroups.hasOwnProperty(group)) {
                         intendedGroup = new Map([...userGroups[group]]);
@@ -42,10 +44,23 @@ const userGroupsReducer = (state = {userGroups: {}}, action) => {
                             userGroups[group] = intendedGroup;
                         }
                     }
-                }            
+                }
+                
                 nextState = {
+                    ...state,
                     userGroups: userGroups
                 }
+            return nextState;
+        }
+
+        case 'TOGGLE_COLLAPSE': {
+            let nextState,
+                {isCollapsed} = state;
+                
+            nextState = {
+                ...state,
+                isCollapsed: !isCollapsed
+            }
             return nextState;
         }
 
@@ -54,4 +69,4 @@ const userGroupsReducer = (state = {userGroups: {}}, action) => {
     }
 } 
 
-export default userGroupsReducer;
+export default conversationListReducer;

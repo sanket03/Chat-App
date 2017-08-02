@@ -22,7 +22,6 @@ const loginEvents = () => {
 
             if(shouldRedirectUser) {
                 client.join(defaultId);
-                client.join('test-room');
                 addUserToActiveUsersList(client.id, nickname, userList);
                 client.broadcast.emit('newUserJoined', defaultGroup, defaultId, nickname);
             }
