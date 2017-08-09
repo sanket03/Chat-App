@@ -2,9 +2,10 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+
 import config from '../utilities/config';
 import actions  from '../actions/userActions';
-import LoginInterface from '../components/loginInterface';
+import LoginInterface from '../components/loginInterface.jsx';
 
 class Login extends React.Component {
 

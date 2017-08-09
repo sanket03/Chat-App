@@ -4,7 +4,6 @@ const loginEvents = () => {
           defaultId = 'z-1111111';
 
     // Check whether a nickname is unique
-    // Function is pure :) 
     let checkNickname = (nickname,userList) => {
         let isUnique;
         isUnique = !userList.has(nickname);

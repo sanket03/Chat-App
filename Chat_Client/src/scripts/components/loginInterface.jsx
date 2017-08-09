@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RedirectToChat from '../components/redirectToChat';
+
+import RedirectToChat from '../components/redirectToChat.jsx';
 import '../../styles/login.scss';
 
 const LoginInterface = (props) => {

@@ -2,8 +2,9 @@ import React from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import Login from '../containers/login';
-import ChatContainer from '../components/chatContainer';
+
+import Login from '../containers/login.jsx';
+import ChatContainer from '../components/chatContainer.jsx';
 
 class App extends React.Component {
 

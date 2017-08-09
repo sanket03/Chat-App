@@ -14,10 +14,10 @@ chat.io.on('connection',(client) => {
     // Get the list of active clients
     client.on('getActiveUsersList', () => { loginEvents.getActiveUsersList(client, chat); });
 
-    client.on('clientMessage', (msg) => {
-        client.broadcast.emit('serverMessage',msg);
-    });
+    // Send the message to particular client or group
+    client.on('clientMessage', (msgObject) => { chatroomEvents.sendMessage(client, msgObject, chat); });
 
+    // Broadcast to all the users that client has disconnected
     client.on('disconnecting', () => { chatroomEvents.userDisconnected(client, chat); });
 })
 

@@ -1,5 +1,13 @@
-module.exports = chatroomEvents = () => {
+const chatroomEvents = () => {
     return {
+
+        // Send message to intended group or user
+        // If recepient is not present in userList then its a group else its an individual client
+        sendMessage: (client, msgObject, {userList}) => {
+            let {recipient, sender, message} = msgObject;
+            userList.has(recipient) ? client.to(userList.get(recipient)).emit('responseToClientMsg', {sender, message})
+                                    : client.to(recipient).emit('responseToGroupMsg', msgObject);
+        },
 
         // Emit event to the server notifying user has disconnected
         userDisconnected: (client, {userList}) => {
@@ -21,3 +29,6 @@ module.exports = chatroomEvents = () => {
             client.broadcast.emit('userDisconnected', roomsList, disconnectedUser);
         }
     }}
+
+    module.exports = chatroomEvents;
+

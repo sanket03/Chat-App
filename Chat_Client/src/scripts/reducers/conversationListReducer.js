@@ -1,5 +1,4 @@
-const conversationListReducer = (state = {isCollapsed: true, userGroups: {}}, action) => {
-
+const conversationListReducer = (state = {isCollapsed: true, userGroups: {}},action) => {
     switch(action.type) {
 
         case 'ADD_USER_TO_GROUP': {
@@ -8,19 +7,19 @@ const conversationListReducer = (state = {isCollapsed: true, userGroups: {}}, ac
 
             userGroups = {...state.userGroups};
 
-            if(userGroups.hasOwnProperty(groupName)) {
-                intendedGroup = new Map([...userGroups[groupName]]);
+            if(userGroups.hasOwnProperty(groupId)) {
+                intendedGroup = new Map([...userGroups[groupId]]);
                 currentMembers = [...intendedGroup.get('members')];
                 updatedMembers = new Set([...currentMembers,...usersList]);
             } else {
                 updatedMembers = new Set(usersList);
-                userGroups[groupName] = new Map();
-                intendedGroup = userGroups[groupName];
-                intendedGroup.set('groupId', groupId);
+                userGroups[groupId] = new Map();
+                intendedGroup = userGroups[groupId];
+                intendedGroup.set('groupName', groupName);
             }
 
             intendedGroup.set('members', updatedMembers);
-            userGroups[groupName] = intendedGroup;
+            userGroups[groupId] = intendedGroup;
             nextState = {
                 ...state,
                 userGroups: userGroups
@@ -37,7 +36,7 @@ const conversationListReducer = (state = {isCollapsed: true, userGroups: {}}, ac
                 for(let group in userGroups) {
                     if(userGroups.hasOwnProperty(group)) {
                         intendedGroup = new Map([...userGroups[group]]);
-                        if(groupsList.includes(intendedGroup.get('groupId'))) {
+                        if(groupsList.includes(group)) {
                             groupMembers = new Set([...intendedGroup.get('members')])
                             groupMembers.delete(nickname);
                             intendedGroup.set('members', groupMembers);

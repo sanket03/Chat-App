@@ -1,4 +1,16 @@
 #message-container {
     overflow: auto;
     height: 80%;
+    text-align: center;
+
+    #message-list-container {
+        .recipient {
+            text-align: left;
+        }
+        
+        .sender {
+            text-align: right;
+        }
+    }
 }
+
