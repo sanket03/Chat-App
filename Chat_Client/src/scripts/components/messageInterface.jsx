@@ -5,6 +5,7 @@ const MessageInterface = (props) => {
     let {activeChat, messageObject, groups} = props,
         {chatName, chatId} = activeChat;
 
+    // Render chat messages based on whether its a group message or an individual message
     let renderMessages = (msgObject, chatId) => {
         let messageList, sender, msg, isSentByClient ,element;
         messageList  = msgObject[chatId].messageList.map((message,index) => {
@@ -14,8 +15,8 @@ const MessageInterface = (props) => {
 
             if(groups.hasOwnProperty(chatId)) {
                 return (
-                    <div className = {isSentByClient ? 'sender' : 'recipient'} key = {index}>
-                        {!isSentByClient && <span>{sender}:<br></br></span>}
+                    <div className = {isSentByClient ? 'sender group-msg' : 'recipient group-msg'} key = {index}>
+                        {!isSentByClient && <span>{sender}<br></br></span>}
                         <span>{msg}</span>
                     </div>
                 )

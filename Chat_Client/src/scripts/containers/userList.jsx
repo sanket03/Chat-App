@@ -46,9 +46,20 @@ class UserList extends React.Component {
         this.defaultGroup = this.defaultGroup.length === 0 ? groupId : this.defaultGroup; 
     }
 
+    // Update unseen chat count 
+    updateNotification(messageObject, unseenChatCount) {
+        for(let chatId in messageObject) {
+            if(messageObject.hasOwnProperty(chatId)) {
+                messageObject[chatId].unseenMsgCount !== 0 && unseenChatCount++;
+            }
+        }
+        return unseenChatCount;
+    }
+
 
     render() {
-        let {toggleCollapse, 
+        let unseenChatCount = 0,
+            {toggleCollapse, 
              isCollapsed,
              nickname,
              messageObject,
@@ -56,13 +67,20 @@ class UserList extends React.Component {
              updateUnseenMsgCount,
              setActiveChatState} = this.props;
 
+        unseenChatCount = this.updateNotification(messageObject, unseenChatCount);
+
         return (
             <div id = 'conversations-tab'>
                 <div className = {!isCollapsed ? 'overlay show': 'overlay hide'}
                      onClick = {toggleCollapse}>
                 </div>
                 <Button color = 'primary' onClick = {toggleCollapse}>
-                    Conversations
+                    <span>
+                        Conversations
+                    </span>
+                    <span className = 'unseen-chat-count'>
+                        {unseenChatCount !== 0 && unseenChatCount}
+                    </span>
                 </Button>
                 <Collapse isOpen = {!isCollapsed} delay = {{show:0}}>
                     <UserListInterface 

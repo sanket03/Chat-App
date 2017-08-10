@@ -30,13 +30,18 @@
         .sender {
             @include messageStyle;
             align-self: flex-end;
-            background-color: wheat;
+            background-color: #F5DEB3;
         }
 
         .recipient {
             @include messageStyle;
             align-self: flex-start;
-            background-color: lavender;
+            background-color: #E6E6FA;
+
+            &.group-msg > span:first-of-type {
+            font-style: italic;
+            font-weight: 600;
+        }
         }
     }
 }

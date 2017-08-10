@@ -60,8 +60,12 @@ const UserListInterface = (props) => {
                     key = {user}
                     onClick = {updateChatState.bind(null, false)}
                 > 
-                    <span>{user}</span>
-                    {unseenMsgCount !== 0 && <span>{unseenMsgCount}</span>}
+                    <span className = 'user-name'>
+                        {user}
+                    </span>
+                    <span className = 'unseen-msg-count'>
+                        {unseenMsgCount !== 0 && unseenMsgCount}
+                    </span>
                 </li>
             )});
         return element;
@@ -80,8 +84,12 @@ const UserListInterface = (props) => {
                     key = {group}
                     onClick = {updateChatState.bind(null, true)}
                 > 
-                    <span>{groupsList[group].get('groupName')}</span>
-                    {unseenMsgCount !== 0 && <span>{unseenMsgCount}</span>}
+                    <span className = 'group-name'>
+                        {groupsList[group].get('groupName')}
+                    </span>
+                    <span className = 'unseen-msg-count'>
+                         {unseenMsgCount !== 0 && unseenMsgCount}
+                    </span>
                 </li>
             )});
         return element;
@@ -89,7 +97,6 @@ const UserListInterface = (props) => {
 
     return (
         <div id = 'conversations-container'>
-            <div id = 'list-containers'>
                 <ul type = 'none' id = 'group-list-container'>
                     {renderGroupsList(userGroups)}
                 </ul>
@@ -97,7 +104,6 @@ const UserListInterface = (props) => {
                 <ul id = 'friend-list-container'>
                     {props.defaultGroup.length > 0 && renderUsersList(props.userGroups[defaultGroup], nickname)}
                 </ul>
-            </div>
         </div>
     );
 }

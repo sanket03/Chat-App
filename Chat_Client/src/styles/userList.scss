@@ -19,6 +19,7 @@
     }
 
     > button {
+        position: relative;
         background-color: #8A2BE2;
         width: 200px;
         cursor: pointer;
@@ -26,6 +27,11 @@
         font-weight: 600;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         border: none;
+
+        .unseen-chat-count {
+            position: absolute;
+            right: 14px;
+        }
     }
 
     > button:focus {
@@ -52,29 +58,44 @@
             font-weight: 600;
         }
 
-        > div {
-            margin-top: 10px;
-        }
-
-        ul {
+        @mixin ul {
             text-align: left;
             margin: 0;
             font-size: 0.95em;
             cursor: pointer;
+        }
 
-            li:hover {
-                color: #7FFF2A;
+        #group-list-container { 
+            @include ul;
+            padding: 5px 25px 5px 23px;
+            margin-top: 10px;
+
+            .group-name {
+                font-style: italic;
+            }
+
+            .group-name:hover {
                 font-weight: 600;
             }
         }
 
-        #group-list-container { 
-            padding: 5px 0 5px 23px;
-            font-style: italic;
+        #friend-list-container {
+            @include ul;
+            padding: 5px 25px 5px 42px;
+
+            .user-name:hover {
+                font-weight: 600;
+            }
         }
 
-        #friend-list-container {
-            padding: 5px 0 5px 42px;
+        .unseen-msg-count {
+            float: right;
+            border-radius: 23px;
+            padding: 0 5px;
+            font-size: 10px;
+            margin-top: 4px;
+            color: #FFF;
+            background-color: #8A2BE2;
         }
     }
 }

@@ -26,7 +26,7 @@ class ChatUtilities extends React.Component {
             'message': msg
         };
 
-        if(event.type === 'click' || event.which === 13) {
+        if((event.type === 'click' || event.which === 13) && msg.length !== 0) {
             updateMessageList(activeChat.chatId, {'you': msg});
             this.socket.emit('clientMessage',msgObject);
             this.userMsgRef.value = '';
