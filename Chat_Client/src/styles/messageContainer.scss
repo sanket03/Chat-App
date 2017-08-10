@@ -1,16 +1,42 @@
+/*Mixin for styling messages*/
+@mixin messageStyle {
+  max-width: 80%;
+  padding: 10px;
+  border-radius: 10px;
+  word-break: break-word;
+  text-align: left;
+  margin: 5px 0;
+}
+
 #message-container {
-    overflow: auto;
     height: 80%;
     text-align: center;
 
+    @media (min-height:320px) and (max-height: 500px) {
+        height: 62%;
+    }
+
     #message-list-container {
-        .recipient {
-            text-align: left;
+        height: 96%;
+        overflow: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+
+        @media (min-height:320px) and (max-height: 500px) {
+            height: 86%;
         }
-        
+
         .sender {
-            text-align: right;
+            @include messageStyle;
+            align-self: flex-end;
+            background-color: wheat;
+        }
+
+        .recipient {
+            @include messageStyle;
+            align-self: flex-start;
+            background-color: lavender;
         }
     }
 }
-

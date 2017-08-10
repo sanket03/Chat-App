@@ -12,13 +12,8 @@
     transform: translate(-50%,-50%);
     position: absolute;
     padding: 0;
-}
 
-@media (min-height:320px) and (max-height: 500px) {
-    #chat-container {
+    @media (min-height:320px) and (max-height: 500px) {
         height:250px;
-    }
-    #message-container {
-        height: 62%;
     }
 }
