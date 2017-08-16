@@ -1,4 +1,4 @@
-# Chat-App
+# HallaBol
 Chat Application based on socket.io 
 
 **Tech Stack:**
@@ -13,6 +13,7 @@ Chat Application based on socket.io
 Clone the repository and run the following commands under appropriate directories
  - Do 'npm install'
  - Run 'npm start'
+ 
 Server starts at 8088 and client at 8080
 
 **How it works:**
