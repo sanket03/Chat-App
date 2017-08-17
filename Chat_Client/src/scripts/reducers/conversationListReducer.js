@@ -3,7 +3,7 @@ const conversationListReducer = (state = {isCollapsed: true, userGroups: {}},act
 
         case 'ADD_USER_TO_GROUP': {
             let nextState, updatedMembers, userGroups, currentMembers, intendedGroup,
-                {groupName, groupId, usersList} = action.payload;
+                {groupName, groupId, usersList, admin} = action.payload;
 
             userGroups = {...state.userGroups};
 
@@ -16,6 +16,7 @@ const conversationListReducer = (state = {isCollapsed: true, userGroups: {}},act
                 userGroups[groupId] = new Map();
                 intendedGroup = userGroups[groupId];
                 intendedGroup.set('groupName', groupName);
+                intendedGroup.set('admin', admin);
             }
 
             intendedGroup.set('members', updatedMembers);

@@ -1,8 +1,10 @@
 import React from 'react';
+import {Route} from 'react-router-dom';
 
 import ChatUtilities from '../containers/chatUtilities.jsx';
 import MessageContainer from '../containers/messageContainer.jsx';
 import UserList from '../containers/userList.jsx';
+import ManageGroup from '../containers/manageGroup.jsx';
 import '../../styles/chatContainer.scss';
 
 const ChatContainer = () => {

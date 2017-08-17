@@ -5,8 +5,9 @@ const chatroomEvents = () => {
         // If recepient is not present in userList then its a group else its an individual client
         sendMessage: (client, msgObject, {userList}) => {
             let {recipient, sender, message} = msgObject;
+            
             userList.has(recipient) ? client.to(userList.get(recipient)).emit('responseToClientMsg', {sender, message})
-                                    : client.to(recipient).emit('responseToGroupMsg', msgObject);
+                                    : client.broadcast.to(recipient).emit('responseToGroupMsg', msgObject);
         },
 
         // Emit event to the server notifying user has disconnected

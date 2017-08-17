@@ -22,19 +22,24 @@
             outline: none;
         }
 
-        #send-btn {
-            height: 38px;
-            width: 38px;
-            border-radius: 20px;
-            background-color: #8A2BE2;
+        button {
+            background-color: transparent ;
+            box-shadow: none;
 
             .fa {
-                font-size: 12px;
-                color: #FFF;
-                margin-left: -5px;
+                font-size: 15px;
+                color: #8A2BE2;
+                cursor: pointer;
+                width: 0;
             }
         }
-        
+
+        .disable { 
+            .fa {
+                color: #787878;
+                pointer-events: none;
+            }    
+        }
     }
 }
 

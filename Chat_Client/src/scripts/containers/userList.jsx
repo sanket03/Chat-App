@@ -20,16 +20,16 @@ class UserList extends React.Component {
         let { addUserToGroup, removeUserFromGroup, setActiveChatState, nickname } = this.props;
         
         // Add user to default group
-        this.socket.on('setActiveUsersList', (groupName, groupId, usersList) => {
+        this.socket.on('setActiveUsersList', (groupName, groupId, usersList, admin) => {
             this.setDefaultGroup(groupId);
-            addUserToGroup(groupName, groupId, usersList);
+            addUserToGroup(groupName, groupId, usersList, admin);
             setActiveChatState(groupId, groupName);    
         });
         
         // Update active users list when a new user gets connected
-        this.socket.on('newUserJoined', (groupName, groupId, connectedUser) => {
+        this.socket.on('newUserJoined', (groupName, groupId, connectedUser, admin) => {
             this.setDefaultGroup(groupId);
-            addUserToGroup(groupName, groupId, [connectedUser]); 
+            addUserToGroup(groupName, groupId, [connectedUser], admin); 
         });
 
         // Update active users list when user is disconnected
@@ -109,8 +109,8 @@ const mapStateToProps = ({conversationListReducer, loginReducer, chatroomReducer
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addUserToGroup: (groupName, groupId, usersList) => {
-            dispatch(actions.addUserToGroup(groupName, groupId, usersList));
+        addUserToGroup: (groupName, groupId, usersList, admin) => {
+            dispatch(actions.addUserToGroup(groupName, groupId, usersList, admin));
         },
 
         removeUserFromGroup: (groupsList, nickname) => {

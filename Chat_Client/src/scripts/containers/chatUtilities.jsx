@@ -11,7 +11,29 @@ class ChatUtilities extends React.Component {
         super();
         this.socket = config.socket;
         this.userMsgRef;
+        this.isAdmin;
+        this.isGroup;
         this.sendMessage = this.sendMessage.bind(this);
+        this.setPropsForGroups = this.setPropsForGroups.bind(this);
+    }
+
+    // Control rendering of the component
+    shouldComponentUpdate(nextProps) {
+        let shouldRender;
+        shouldRender = nextProps.activeChat === this.props.activeChat ? false : true;
+        return shouldRender; 
+    }
+
+    // Set properties for 
+    setPropsForGroups({chatId}, userGroups, nickname) {
+        if(Object.keys(userGroups).includes(chatId)) {
+            this.isGroup = true;
+            this.isAdmin = userGroups[chatId].get('admin') === nickname ? true : false;
+        } else {
+            this.isGroup = false;
+        }
+
+        
     }
 
     // Send message to the group or individual client
@@ -34,8 +56,13 @@ class ChatUtilities extends React.Component {
     }
 
     render() {
+        let {activeChat, userGroups, nickname} = this.props;
+        this.setPropsForGroups(activeChat, userGroups, nickname);
         return (
-            <ChatUtilitiesInterface sendMessage = {this.sendMessage}>
+            <ChatUtilitiesInterface sendMessage = {this.sendMessage}
+                                    isAdmin = {this.isAdmin}
+                                    isGroup = {this.isGroup}
+            >
                 <input ref = {(input) => this.userMsgRef = input} 
                        placeholder = 'Type message here'  
                        type = 'text' 
@@ -46,10 +73,11 @@ class ChatUtilities extends React.Component {
     }
 }
 
-const mapStateToProps = ({chatroomReducer, loginReducer}) => {
+const mapStateToProps = ({chatroomReducer, loginReducer, conversationListReducer}) => {
     return {
         activeChat: chatroomReducer.activeChat,
-        nickname: loginReducer.nickname
+        nickname: loginReducer.nickname,
+        userGroups: conversationListReducer.userGroups
     }
 }
 
