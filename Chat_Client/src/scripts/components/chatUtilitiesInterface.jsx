@@ -14,14 +14,16 @@ const ChatUtilitiesInterface  = (props) => {
                     {props.children}
                     <span className = {props.isGroup ? 'input-group-btn' : 'input-group-btn disable'}>
                         <button className = 'btn' type = 'button'>
-                            <Link to = {'/chat/manageGroup'}>
+                            <Link to = '/chat/manageGroup'>
                                 <i className="fa fa-users" aria-hidden="true"></i>
                             </Link>
                         </button>
                     </span>
                     <span className = 'input-group-btn'>
                         <button className = 'btn' type = 'button'>
-                            <i className="fa fa-user-plus" aria-hidden="true"></i>
+                            <Link to = '/chat/createGroup'>
+                                <i className="fa fa-user-plus" aria-hidden="true"></i>
+                            </Link>
                         </button>
                     </span>
                     <span className = 'input-group-btn'>

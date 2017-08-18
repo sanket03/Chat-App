@@ -42,9 +42,10 @@ const actions = (() => {
             payload: {chatId, type}
         }),
 
-        //
-        shouldRedirectToGroupManagement: () => ({
-            type: 'REDIRECT_TO_GROUP_MANAGEMENT'
+        // Set default group
+        setDefaultGroup: (groupId) => ({
+            type: 'SET_DEFAULT_GROUP',
+            payload: groupId
         })
     }
 })();

@@ -12,24 +12,26 @@ class UserList extends React.Component {
     constructor(props) {
         super(props);
         this.socket = config.socket;
-        this.defaultGroup = '';
-        this.setDefaultGroup = this.setDefaultGroup.bind(this);
     }
 
     componentDidMount() {
-        let { addUserToGroup, removeUserFromGroup, setActiveChatState, nickname } = this.props;
+        let { addUserToGroup, 
+              removeUserFromGroup, 
+              setDefaultGroup, 
+              setActiveChatState, 
+              nickname } = this.props;
         
         // Add user to default group
         this.socket.on('setActiveUsersList', (groupName, groupId, usersList, admin) => {
-            this.setDefaultGroup(groupId);
             addUserToGroup(groupName, groupId, usersList, admin);
             setActiveChatState(groupId, groupName);    
+            setDefaultGroup(groupId);
         });
         
         // Update active users list when a new user gets connected
         this.socket.on('newUserJoined', (groupName, groupId, connectedUser, admin) => {
-            this.setDefaultGroup(groupId);
             addUserToGroup(groupName, groupId, [connectedUser], admin); 
+            setDefaultGroup(groupId);
         });
 
         // Update active users list when user is disconnected
@@ -39,11 +41,6 @@ class UserList extends React.Component {
 
         // Fetch list of active users
         this.socket.emit('getActiveUsersList');
-    }
-
-    // Set default group name for users
-    setDefaultGroup(groupId) {
-        this.defaultGroup = this.defaultGroup.length === 0 ? groupId : this.defaultGroup; 
     }
 
     // Update unseen chat count 
@@ -62,6 +59,7 @@ class UserList extends React.Component {
             {toggleCollapse, 
              isCollapsed,
              nickname,
+             defaultGroup,
              messageObject,
              userGroups,
              updateUnseenMsgCount,
@@ -86,7 +84,7 @@ class UserList extends React.Component {
                     <UserListInterface 
                         userGroups = {userGroups} 
                         chatObject = {messageObject}
-                        defaultGroup = {this.defaultGroup}
+                        defaultGroup = {defaultGroup}
                         nickname = {nickname}
                         toggleCollapse = {toggleCollapse}
                         setActiveChatState = {setActiveChatState}
@@ -102,8 +100,9 @@ const mapStateToProps = ({conversationListReducer, loginReducer, chatroomReducer
     return {
         isCollapsed: conversationListReducer.isCollapsed,
         userGroups: conversationListReducer.userGroups,
+        defaultGroup: conversationListReducer.defaultGroup,
         nickname: loginReducer.nickname,
-        messageObject: chatroomReducer.messageObject
+        messageObject: chatroomReducer.messageObject,
     }
 }
 
@@ -127,6 +126,10 @@ const mapDispatchToProps = (dispatch) => {
 
         updateUnseenMsgCount: (chatId, type) => {
             dispatch(actions.updateUnseenMsgCount(chatId, type));
+        },
+
+        setDefaultGroup: (groupId) => {
+            dispatch(actions.setDefaultGroup(groupId));
         }
     }
 }

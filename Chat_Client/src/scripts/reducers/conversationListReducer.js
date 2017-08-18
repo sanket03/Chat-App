@@ -1,4 +1,4 @@
-const conversationListReducer = (state = {isCollapsed: true, userGroups: {}},action) => {
+const conversationListReducer = (state = {isCollapsed: true, userGroups: {}, defaultGroup: ''},action) => {
     switch(action.type) {
 
         case 'ADD_USER_TO_GROUP': {
@@ -60,6 +60,19 @@ const conversationListReducer = (state = {isCollapsed: true, userGroups: {}},act
             nextState = {
                 ...state,
                 isCollapsed: !isCollapsed
+            }
+            return nextState;
+        }
+
+        case 'SET_DEFAULT_GROUP': {
+            let nextState,
+                {defaultGroup} = state;
+
+            defaultGroup = defaultGroup.length === 0 ? action.payload : defaultGroup;
+            
+            nextState = {
+                ...state,
+                defaultGroup: defaultGroup
             }
             return nextState;
         }

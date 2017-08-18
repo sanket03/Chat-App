@@ -58,7 +58,6 @@ class ChatUtilities extends React.Component {
         this.setPropsForGroups(activeChat, userGroups, nickname);
         return (
             <ChatUtilitiesInterface sendMessage = {this.sendMessage}
-                                    shouldRedirectToGroupManagement = {shouldRedirectToGroupManagement}
                                     isAdmin = {this.isAdmin}
                                     isGroup = {this.isGroup}
             >
@@ -84,10 +83,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateMessageList: (chatId, senderMsgpair) => {
             dispatch(actions.updateMessageList(chatId, senderMsgpair));
-        },
-
-        shouldRedirectToGroupManagement: () => {
-            dispatch(actions.shouldRedirectToGroupManagement());
         }
     }
 }
