@@ -40,6 +40,11 @@ const actions = (() => {
         updateUnseenMsgCount: (chatId,type) => ({
             type: 'UPDATE_UNSEEN_MSG_COUNT',
             payload: {chatId, type}
+        }),
+
+        //
+        shouldRedirectToGroupManagement: () => ({
+            type: 'REDIRECT_TO_GROUP_MANAGEMENT'
         })
     }
 })();

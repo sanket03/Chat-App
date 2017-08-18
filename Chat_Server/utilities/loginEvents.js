@@ -34,7 +34,6 @@ const loginEvents = () => {
         // Get the list of connnected users
         getActiveUsersList: (client,{userList}) => {
             client.emit('setActiveUsersList', defaultGroup, defaultId, [...userList.keys()], defaultAdmin);
-            console.log(defaultGroup);
         }
     }
 }

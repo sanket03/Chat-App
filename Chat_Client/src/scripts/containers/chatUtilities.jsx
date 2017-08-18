@@ -24,16 +24,14 @@ class ChatUtilities extends React.Component {
         return shouldRender; 
     }
 
-    // Set properties for 
+    // Set properties for groups
     setPropsForGroups({chatId}, userGroups, nickname) {
         if(Object.keys(userGroups).includes(chatId)) {
             this.isGroup = true;
             this.isAdmin = userGroups[chatId].get('admin') === nickname ? true : false;
         } else {
             this.isGroup = false;
-        }
-
-        
+        }    
     }
 
     // Send message to the group or individual client
@@ -56,10 +54,11 @@ class ChatUtilities extends React.Component {
     }
 
     render() {
-        let {activeChat, userGroups, nickname} = this.props;
+        let {activeChat, userGroups, nickname, shouldRedirectToGroupManagement} = this.props;
         this.setPropsForGroups(activeChat, userGroups, nickname);
         return (
             <ChatUtilitiesInterface sendMessage = {this.sendMessage}
+                                    shouldRedirectToGroupManagement = {shouldRedirectToGroupManagement}
                                     isAdmin = {this.isAdmin}
                                     isGroup = {this.isGroup}
             >
@@ -85,6 +84,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateMessageList: (chatId, senderMsgpair) => {
             dispatch(actions.updateMessageList(chatId, senderMsgpair));
+        },
+
+        shouldRedirectToGroupManagement: () => {
+            dispatch(actions.shouldRedirectToGroupManagement());
         }
     }
 }

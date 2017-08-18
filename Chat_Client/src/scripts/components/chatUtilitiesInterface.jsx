@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Redirect} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 
 import ManageGroup from '../containers/manageGroup.jsx';
 import CreateGroup from '../containers/createGroup.jsx';
@@ -14,7 +14,9 @@ const ChatUtilitiesInterface  = (props) => {
                     {props.children}
                     <span className = {props.isGroup ? 'input-group-btn' : 'input-group-btn disable'}>
                         <button className = 'btn' type = 'button'>
-                            <i className="fa fa-users" aria-hidden="true"></i>
+                            <Link to = {'/chat/manageGroup'}>
+                                <i className="fa fa-users" aria-hidden="true"></i>
+                            </Link>
                         </button>
                     </span>
                     <span className = 'input-group-btn'>

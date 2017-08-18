@@ -1,4 +1,4 @@
-const chatroomReducer = (state = {activeChat: {}, messageObject: {}}, action) => {
+const chatroomReducer = (state = {activeChat: {}, messageObject: {}, shouldRedirect: false}, action) => {
 
     switch(action.type) {
         case 'UPDATE_CHAT_MESSAGES': {
@@ -54,6 +54,15 @@ const chatroomReducer = (state = {activeChat: {}, messageObject: {}}, action) =>
                 activeChat: activeChat
             }
             return nextState;
+        }
+
+        case 'REDIRECT_TO_GROUP_MANAGEMENT': {
+            let nextState;
+            nextState = {
+                ...state,
+                shouldRedirect: true
+            }
+            return nextState
         }
 
         default:

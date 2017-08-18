@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Login from '../containers/login.jsx';
-import ChatContainer from '../components/chatContainer.jsx';
+import ChatroomRoutes from '../components/chatroomRoutes.jsx';
 
 class App extends React.Component {
 
@@ -16,7 +16,7 @@ class App extends React.Component {
     // Redirect to login page if user directly hits /chat URL
     routeUser() {
         if(!this.props.redirectToLogin) { 
-            return (<ChatContainer/>);
+            return (<ChatroomRoutes/>);
         }  
        else {
            return (<Redirect to = {'/'}/>);
