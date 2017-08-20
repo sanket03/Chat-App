@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import config from '../utilities/config';
-import actions  from '../actions/userActions';
+import chatActions  from '../actions/chatActions';
 import LoginInterface from '../components/loginInterface.jsx';
 
 class Login extends React.Component {
@@ -50,7 +50,7 @@ const mapStateToProps  = ({loginReducer}) =>  {
 const mapDispatchToProps = (dispatch) => {
     return {
         redirectUser: (shouldRedirectUser, nickname) => {
-            dispatch(actions.redirectUser(shouldRedirectUser, nickname));
+            dispatch(chatActions.redirectUser(shouldRedirectUser, nickname));
         }
     } 
 }

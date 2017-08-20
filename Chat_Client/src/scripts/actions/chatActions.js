@@ -1,5 +1,5 @@
 
-const actions = (() => {
+const chatActions = (() => {
     return {
         // Redirect user to chat
         redirectUser : (shouldRedirectUser, nickname) => ({
@@ -7,27 +7,10 @@ const actions = (() => {
             payload: {shouldRedirectUser, nickname}
         }),
 
-        // Add user to group
-        addUserToGroup: (groupName, groupId, usersList, admin) => ({
-            type: 'ADD_USER_TO_GROUP',
-            payload: {groupName, groupId, usersList, admin}
-        }),
-
-        // Remove user from group
-        removeUserFromGroup: (groupsList, nickname) => ({
-            type: 'REMOVE_USER_FROM_GROUP',
-            payload: {groupsList, nickname}
-        }),
-
         // Set active chat state
         setActiveChatState: (id, name) => ({
             type: 'SET_ACTIVE_CHAT',
             payload: {id, name}
-        }),
-
-        // Toggle collapse for conversations tab
-        toggleCollapse: () => ({
-            type: 'TOGGLE_COLLAPSE'
         }),
 
         // Update chat room with messages
@@ -42,12 +25,11 @@ const actions = (() => {
             payload: {chatId, type}
         }),
 
-        // Set default group
-        setDefaultGroup: (groupId) => ({
-            type: 'SET_DEFAULT_GROUP',
-            payload: groupId
-        })
+        // Toggle collapse for conversations tab
+        toggleCollapse: () => ({
+            type: 'TOGGLE_COLLAPSE'
+        }),
     }
 })();
 
-export default actions;
+export default chatActions;

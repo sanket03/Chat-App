@@ -1,4 +1,11 @@
-const conversationListReducer = (state = {isCollapsed: true, userGroups: {}, defaultGroup: ''},action) => {
+const conversationListReducer = (
+    state = {
+                isCollapsed: true, 
+                userGroups: {},
+                searchResult: [],
+                selectedUsers: [],
+                defaultGroup: ''
+            },action) => {
     switch(action.type) {
 
         case 'ADD_USER_TO_GROUP': {

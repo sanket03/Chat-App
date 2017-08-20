@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import config from '../utilities/config';
-import actions from '../actions/userActions.js';
+import chatActions from '../actions/chatActions';
+import groupActions from '../actions/groupActions';
 import UserListInterface from '../components/userListInterface.jsx';
 
 class UserList extends React.Component {
@@ -109,28 +110,28 @@ const mapStateToProps = ({conversationListReducer, loginReducer, chatroomReducer
 const mapDispatchToProps = (dispatch) => {
     return {
         addUserToGroup: (groupName, groupId, usersList, admin) => {
-            dispatch(actions.addUserToGroup(groupName, groupId, usersList, admin));
+            dispatch(groupActions.addUserToGroup(groupName, groupId, usersList, admin));
         },
 
         removeUserFromGroup: (groupsList, nickname) => {
-            dispatch(actions.removeUserFromGroup(groupsList, nickname));
+            dispatch(groupActions.removeUserFromGroup(groupsList, nickname));
+        },
+   
+        setDefaultGroup: (groupId) => {
+            dispatch(groupActions.setDefaultGroup(groupId));
         },
 
         setActiveChatState: (id, name) => {
-            dispatch(actions.setActiveChatState(id, name));
+            dispatch(chatActions.setActiveChatState(id, name));
         },
 
         toggleCollapse: () => {
-            dispatch(actions.toggleCollapse());
+            dispatch(chatActions.toggleCollapse());
         },
 
         updateUnseenMsgCount: (chatId, type) => {
-            dispatch(actions.updateUnseenMsgCount(chatId, type));
+            dispatch(chatActions.updateUnseenMsgCount(chatId, type));
         },
-
-        setDefaultGroup: (groupId) => {
-            dispatch(actions.setDefaultGroup(groupId));
-        }
     }
 }
 

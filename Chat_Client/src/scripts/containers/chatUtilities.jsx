@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../actions/userActions';
+import chatActions from '../actions/chatActions';
 import config from '../utilities/config';
 import ChatUtilitiesInterface from '../components/chatUtilitiesInterface.jsx';
 
@@ -82,7 +82,7 @@ const mapStateToProps = ({chatroomReducer, loginReducer, conversationListReducer
 const mapDispatchToProps = (dispatch) => {
     return {
         updateMessageList: (chatId, senderMsgpair) => {
-            dispatch(actions.updateMessageList(chatId, senderMsgpair));
+            dispatch(chatActions.updateMessageList(chatId, senderMsgpair));
         }
     }
 }

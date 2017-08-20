@@ -6,10 +6,13 @@ const CreateGroupInterface = (props) => {
         let element;
         element = props.userList.map((user)=> {
             return (
-                <li id = {user}
+                <li className = 'list-group-item justify-content-between' 
+                    id = {user}
                     key = {user}
+                    onClick = {props.toggleUserSelection}
                 >
                     {user}
+                    <span className="badge badge-default badge-pill">14</span>
                 </li>
             )
         })
@@ -17,9 +20,17 @@ const CreateGroupInterface = (props) => {
     }
 
     return (
-        <ul>
-            {renderElement()}
-        </ul>
+        <div id = 'create-group-interface'>
+            {props.children}
+            <ul className = 'list-group'>
+                {renderElement()}
+            </ul>
+            <button type = 'button'
+                    className = 'btn btn-secondary'
+            >
+                Create group
+            </button>
+        </div>
     )
 }
 
