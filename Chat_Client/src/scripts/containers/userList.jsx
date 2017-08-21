@@ -15,7 +15,7 @@ class UserList extends React.Component {
         this.socket = config.socket;
     }
 
-    componentDidMount() {
+    componentWillMount() {
         let { addUserToGroup, 
               removeUserFromGroup, 
               setDefaultGroup, 
@@ -53,7 +53,6 @@ class UserList extends React.Component {
         }
         return unseenChatCount;
     }
-
 
     render() {
         let unseenChatCount = 0,

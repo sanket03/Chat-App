@@ -13,7 +13,7 @@ class MessageContainer extends React.Component {
     }
 
     // Handle message response from server
-    componentDidMount() {
+    componentWillMount() {
         let {updateMessageList, activeChat, updateUnseenMsgCount} = this.props;
 
         // Receive response from individual client

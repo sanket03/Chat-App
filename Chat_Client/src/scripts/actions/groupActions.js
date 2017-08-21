@@ -16,6 +16,18 @@ const groupActions = (() => {
         setDefaultGroup: (groupId) => ({
             type: 'SET_DEFAULT_GROUP',
             payload: groupId
+        }),
+
+        // Filter user list based on search string
+        filterUserList: (searchString) => ({
+            type: 'FILTER_USER_LIST',
+            payload: searchString
+        }),
+
+        // Toggle selection of users when a new group is created
+        toggleUserSelection: (user) => ({
+            type: 'TOGGLE_USER_SELECTION',
+            payload: user
         })
     }
 })();

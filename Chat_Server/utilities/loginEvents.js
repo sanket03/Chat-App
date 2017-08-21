@@ -19,7 +19,7 @@ const loginEvents = () => {
     return {
 
         // Set nickname for the user and broadcast to other users that a new user has connected
-        setNickname : (nickname, client, {userList}) => {
+        setNickname : (client, {userList}, nickname) => {
             let shouldRedirectUser;
             shouldRedirectUser = checkNickname(nickname, userList);
 

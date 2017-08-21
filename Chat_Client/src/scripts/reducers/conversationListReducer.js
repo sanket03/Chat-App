@@ -5,7 +5,8 @@ const conversationListReducer = (
                 searchResult: [],
                 selectedUsers: [],
                 defaultGroup: ''
-            },action) => {
+            }, action) => {
+
     switch(action.type) {
 
         case 'ADD_USER_TO_GROUP': {
@@ -31,7 +32,7 @@ const conversationListReducer = (
             nextState = {
                 ...state,
                 userGroups: userGroups
-            }
+            };
             return nextState;
         }
 
@@ -51,12 +52,46 @@ const conversationListReducer = (
                             userGroups[group] = intendedGroup;
                         }
                     }
-                }
-                
+                }            
                 nextState = {
                     ...state,
                     userGroups: userGroups
-                }
+                };
+            return nextState;
+        }
+
+        case 'FILTER_USER_LIST': {
+            let nextState, 
+                userList = [...state.userGroups[state.defaultGroup].get('members')],
+                searchResult = [...state.searchResult],
+                searchString = action.payload;
+            
+            if(searchString.length === 0) {
+                searchResult = userList;
+            } else {
+                searchResult = userList.filter((user) => user.indexOf(searchString) === 0);
+            }
+            nextState = {
+                ...state,
+                searchResult: searchResult
+            };
+            return nextState;
+        }
+
+        case 'TOGGLE_USER_SELECTION': {
+            let nextState,
+            selectedUsers = [...state.selectedUsers],
+            intendedUser = action.payload;
+
+            if(selectedUsers.includes(intendedUser)) {
+                selectedUsers = selectedUsers.filter((user) => user !== intendedUser);
+            } else {
+                selectedUsers.push(intendedUser);
+            }
+            nextState = {
+                ...state,
+                selectedUsers: selectedUsers
+            };
             return nextState;
         }
 
@@ -67,7 +102,7 @@ const conversationListReducer = (
             nextState = {
                 ...state,
                 isCollapsed: !isCollapsed
-            }
+            };
             return nextState;
         }
 
@@ -75,12 +110,11 @@ const conversationListReducer = (
             let nextState,
                 {defaultGroup} = state;
 
-            defaultGroup = defaultGroup.length === 0 ? action.payload : defaultGroup;
-            
+            defaultGroup = defaultGroup.length === 0 ? action.payload : defaultGroup;          
             nextState = {
                 ...state,
                 defaultGroup: defaultGroup
-            }
+            };
             return nextState;
         }
 

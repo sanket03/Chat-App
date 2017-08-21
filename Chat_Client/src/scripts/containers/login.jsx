@@ -16,7 +16,7 @@ class Login extends React.Component {
         this.setNickName = this.setNickName.bind(this);
     }
  
-    componentDidMount() {
+    componentWillMount() {
         this.socket.on('redirectUser', (shouldRedirectUser, nickname) => {
             this.props.redirectUser(shouldRedirectUser, nickname);
         })
@@ -58,8 +58,7 @@ const mapDispatchToProps = (dispatch) => {
 // Typechecking for props
 Login.propTypes = {
     proceedToChat: PropTypes.bool,
-    rerender: PropTypes.bool,
-    redirectUser: PropTypes.func
+    rerender: PropTypes.bool
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Login);

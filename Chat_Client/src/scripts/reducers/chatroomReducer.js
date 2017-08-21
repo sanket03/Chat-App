@@ -19,7 +19,7 @@ const chatroomReducer = (state = {activeChat: {}, messageObject: {}}, action) =>
             nextState = {
                 ...state,
                 messageObject: chatObject
-            }
+            };
             return nextState;
          }
 
@@ -35,7 +35,7 @@ const chatroomReducer = (state = {activeChat: {}, messageObject: {}}, action) =>
             nextState = {
                 ...state,
                 messageObject: chatObject
-            }
+            };
             return nextState;
         }
 
@@ -48,18 +48,16 @@ const chatroomReducer = (state = {activeChat: {}, messageObject: {}}, action) =>
                 chatId: id,
                 chatName: name
             };
-
             nextState = {
                 ...state,
                 activeChat: activeChat
-            }
+            };
             return nextState;
         }
 
         default:
             return state;
     }
-
 }
 
 export default chatroomReducer;
