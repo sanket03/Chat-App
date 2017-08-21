@@ -10,6 +10,13 @@ const chatroomEvents = () => {
         groupList.set(groupId, admin);
     }
 
+    // Add users to group
+    let emitEventToGroupMembers = (groupObj, groupId, userList) => {
+        groupObj.groupMembers.forEach((member) => {
+            userList.get(member).emit('newGroupCreated', groupObj);
+        })
+    }
+
     return {
 
         // Send message to intended group or user
@@ -22,16 +29,12 @@ const chatroomEvents = () => {
         },
 
         // Create new group 
-        createGroup: (client, {groupList, io}, groupObj) => {
-            let groupId
-
+        createGroup: (client, {groupList,userList, io}, groupObj) => {
+            let groupId;
             groupId = generateGroupId();
             addToGroupsList(groupObj, groupId, groupList);
-            groupObj = {
-                ...groupObj,
-                groupId = groupId
-            }
-            io.emit('newGroupCreated' ,groupObj);
+            groupObj['groupId'] = groupId;
+            emitEventToGroupMembers(groupObj, groupId, userList);
         },
 
         // Emit event to the server notifying user has disconnected
@@ -56,5 +59,5 @@ const chatroomEvents = () => {
     }
 }
 
-    module.exports = chatroomEvents;
+module.exports = chatroomEvents;
 

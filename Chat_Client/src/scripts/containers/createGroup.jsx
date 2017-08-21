@@ -22,11 +22,12 @@ class CreateGroup extends React.Component {
     componentWillMount() {
         let {   initializeSearchResult,
                 addUserToGroup  } = this.props;
+
         initializeSearchResult();
 
         // Add new group to groups list
-        this.socket.on('createGroup', (groupName, groupId, usersList, admin) => {
-            addUserToGroup(groupName, groupId, usersList, admin);
+        this.socket.on('newGroupCreated', ({groupName, groupId, groupMembers, admin}) => {
+            addUserToGroup(groupName, groupId, groupMembers, admin);
         })
     }
 
