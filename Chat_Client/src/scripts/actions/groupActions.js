@@ -7,8 +7,8 @@ const groupActions = (() => {
         }),
 
         // Remove user from group
-        removeUserFromGroup: (groupsList, nickname) => ({
-            type: 'REMOVE_USER_FROM_GROUP',
+        removeUserOnDisconnection: (groupsList, nickname) => ({
+            type: 'REMOVE_USER_ON_DISCONNECTION',
             payload: {groupsList, nickname}
         }),
 
@@ -28,6 +28,27 @@ const groupActions = (() => {
         toggleUserSelection: (user) => ({
             type: 'TOGGLE_USER_SELECTION',
             payload: user
+        }),
+
+        // Validate group name on click of create group button
+        validateGroupCreation: (groupName) => ({
+            type: 'VALIDATE_GROUP_CREATION'
+        }),
+
+        // Set group name while user is typing
+        setGroupName: (value) => ({
+            type: 'SET_GROUP_NAME',
+            payload: value
+        }),
+
+        // Reset validation state for creating group
+        resetGroupValidationState: () => ({
+            type: 'RESET_GROUP_VALIDATION_STATE'
+        }),
+
+        // Reset selected members
+        resetSelectedMembers: () => ({
+            type: 'RESET_SELECTED_MEMBERS'
         })
     }
 })();

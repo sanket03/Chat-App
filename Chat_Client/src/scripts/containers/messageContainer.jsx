@@ -2,31 +2,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import config from '../utilities/config';
 import chatActions from  '../actions/chatActions';
 import MessageInterface from '../components/messageInterface.jsx';
 
 class MessageContainer extends React.Component {
     constructor(props) {
         super(props);
-        this.socket = config.socket;
-    }
-
-    // Handle message response from server
-    componentWillMount() {
-        let {updateMessageList, activeChat, updateUnseenMsgCount} = this.props;
-
-        // Receive response from individual client
-        this.socket.on('responseToClientMsg',({sender, message}) => {
-            updateMessageList(sender, {[sender]: message});
-            sender !== this.props.activeChat.chatId && updateUnseenMsgCount(sender, 'increment');
-        });
-
-        // Receive response from a group
-        this.socket.on('responseToGroupMsg', ({sender, recipient, message}) => {
-            updateMessageList(recipient, {[sender]: message});
-            recipient !== this.props.activeChat.chatId && updateUnseenMsgCount(recipient, 'increment');
-        })
     }
 
     render() {
@@ -41,24 +22,13 @@ class MessageContainer extends React.Component {
     }
 } 
 
+// Map store states to props
 const mapStateToProps  = ({chatroomReducer, conversationListReducer}) =>  {
     return {
         messageObject : chatroomReducer.messageObject,
         activeChat: chatroomReducer.activeChat,
         userGroups: conversationListReducer.userGroups
     }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateMessageList: (chatId, senderMsgPair) => {
-            dispatch(chatActions.updateMessageList(chatId, senderMsgPair));
-        },
-
-        updateUnseenMsgCount: (chatId, type) => {
-            dispatch(chatActions.updateUnseenMsgCount(chatId, type));
-        }
-    }    
 }
 
 // Typechecking for props
@@ -68,4 +38,4 @@ MessageContainer.propTypes = {
     userGroups: PropTypes.object
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(MessageContainer);
+export default connect(mapStateToProps)(MessageContainer);

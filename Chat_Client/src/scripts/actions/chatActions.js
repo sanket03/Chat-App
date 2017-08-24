@@ -1,4 +1,3 @@
-
 const chatActions = (() => {
     return {
         // Redirect user to chat

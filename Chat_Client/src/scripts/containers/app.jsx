@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Login from '../containers/login.jsx';
-import ChatroomRoutes from '../components/chatroomRoutes.jsx';
+import ChatroomRoutes from './chatroomRoutes.jsx';
 
 class App extends React.Component {
 
@@ -35,6 +35,7 @@ class App extends React.Component {
     }
 }
 
+// Map store states to props
 const mapStateToProps  = ({loginReducer}) =>  {
     return {
         redirectToLogin : !loginReducer.proceedToChat

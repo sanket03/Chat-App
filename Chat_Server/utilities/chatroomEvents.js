@@ -6,15 +6,16 @@ const chatroomEvents = () => {
     }
 
     // Add new group to groupList
-    let addToGroupsList = ({groupName, groupMembers, admin}, groupId, groupList) => {
+    let addToGroupsList = ({groupName, groupMembers, admin}, groupId, {groupList}) => {
         groupList.set(groupId, admin);
     }
 
-    // Add users to group
-    let emitEventToGroupMembers = (groupObj, groupId, userList) => {
+    // Add users to group aka socketio room
+    let addMembersToGroup = (groupObj, groupId, {io, userList}) => {
         groupObj.groupMembers.forEach((member) => {
-            userList.get(member).emit('newGroupCreated', groupObj);
-        })
+            io.sockets.connected[userList.get(member)].join(groupId);
+        });
+        io.in(groupId).emit('newGroupCreated', groupObj);
     }
 
     return {
@@ -28,13 +29,13 @@ const chatroomEvents = () => {
                                     : client.broadcast.to(recipient).emit('responseToGroupMsg', msgObject);
         },
 
-        // Create new group 
-        createGroup: (client, {groupList,userList, io}, groupObj) => {
+        // Assign unique id to the group and add members to the group
+        createGroup: (client, chat, groupObj) => {
             let groupId;
             groupId = generateGroupId();
-            addToGroupsList(groupObj, groupId, groupList);
+            addToGroupsList(groupObj, groupId, chat);
             groupObj['groupId'] = groupId;
-            emitEventToGroupMembers(groupObj, groupId, userList);
+            addMembersToGroup(groupObj, groupId, chat);
         },
 
         // Emit event to the server notifying user has disconnected

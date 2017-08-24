@@ -1,43 +1,74 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import '../../styles/createGroup.scss';
+
 const CreateGroupInterface = (props) => {
+    let {   createGroup,
+            inputValueForGroup,
+            setGroupName,
+            activeUsersCount
+        } = props;
 
     // Render list of users
-    let renderElement = () => {
+    let renderUserList = () => {
         let element,
             isSelected,
             { userList, 
               selectedUsers,
-              admin
+              admin,
+              toggleUserSelection,
+              children
             } = props;
 
         userList = userList.filter((user) => user !== admin);
-        element = userList.map((user)=> {
-            isSelected = selectedUsers.includes(user);
-            return (
-                <li className = {'list-group-item justify-content-between'}
-                    id = {user}
-                    key = {user}
-                    onClick = {props.toggleUserSelection}
-                >
-                    {user}
-                   {isSelected && <i className = 'fa fa-check' aria-hidden = 'true'></i>}
-                </li>
-            )
-        })
+        element = (
+                    <div id = 'searchable-users-list'>
+                        {children}
+                        {userList.length !== 0  ? 
+                                                    (
+                                                        <ul>
+                                                            {userList.map((user)=> {
+                                                                isSelected = selectedUsers.includes(user);
+                                                                return (
+                                                                    <li className = 'list-group-item justify-content-between'
+                                                                        id = {user}
+                                                                        key = {user}
+                                                                        onClick = {toggleUserSelection}
+                                                                    >
+                                                                        {user}
+                                                                        {isSelected && <i className = 'fa fa-check' aria-hidden = 'true'></i>}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    )
+                                                :
+                                                    (
+                                                        <span>No results to display</span>
+                                                    )}
+                        
+                    </div>
+                )
         return element;
     }
 
     return (
         <div id = 'create-group-interface'>
-            {props.children}
-            <ul className = 'list-group'>
-                {renderElement()}
-            </ul>
+            <input  id = 'group-name-input'
+                    value = {inputValueForGroup}
+                    className = {inputValueForGroup.length === 0 && 'invalid'}
+                    onChange = {setGroupName}
+            />
+            {
+                activeUsersCount > 1 ?
+                                        renderUserList()
+                                     :
+                                        <span>There are no active users</span>
+            }
             <button type = 'button'
                     className = 'btn btn-secondary'
-                    onClick = {props.createGroup}
+                    onClick = {createGroup}
             >
                 Create group
             </button>
@@ -47,8 +78,9 @@ const CreateGroupInterface = (props) => {
 
 CreateGroupInterface.propTypes = {
     admin: PropTypes.string,
+    activeUserCount: PropTypes.number,
     selectedUsers: PropTypes.array,
-    userList: PropTypes.array,
+    userList: PropTypes.array,    
     toggleUserSelection: PropTypes.func
 }
 

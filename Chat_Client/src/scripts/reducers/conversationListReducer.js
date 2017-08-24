@@ -4,7 +4,9 @@ const conversationListReducer = (
                 userGroups: {},
                 searchResult: [],
                 selectedUsers: [],
-                defaultGroup: ''
+                defaultGroup: '',
+                proceedWithGroupCreation: false,
+                inputValueForGroup: 'New Group'
             }, action) => {
 
     switch(action.type) {
@@ -36,7 +38,7 @@ const conversationListReducer = (
             return nextState;
         }
 
-        case 'REMOVE_USER_FROM_GROUP' : {
+        case 'REMOVE_USER_ON_DISCONNECTION' : {
             let nextState, userGroups, intendedGroup, groupMembers, groupId,
                 {groupsList, nickname} = action.payload;
 
@@ -95,9 +97,18 @@ const conversationListReducer = (
             return nextState;
         }
 
+        case 'RESET_SELECTED_MEMBERS': {
+            let nextState,  selectedUsers;
+            nextState = {
+                ...state, 
+                selectedUsers: []
+            }
+            return nextState;
+        }
+
         case 'TOGGLE_COLLAPSE': {
             let nextState,
-                {isCollapsed} = state;
+                isCollapsed = state.isCollapsed;
                 
             nextState = {
                 ...state,
@@ -108,13 +119,43 @@ const conversationListReducer = (
 
         case 'SET_DEFAULT_GROUP': {
             let nextState,
-                {defaultGroup} = state;
+                defaultGroup = state.defaultGroup;
 
             defaultGroup = defaultGroup.length === 0 ? action.payload : defaultGroup;          
             nextState = {
                 ...state,
                 defaultGroup: defaultGroup
             };
+            return nextState;
+        }
+
+        case 'VALIDATE_GROUP_CREATION': {
+            let nextState, proceedWithGroupCreation;
+
+            proceedWithGroupCreation = state.inputValueForGroup.length === 0 ? false : true;
+            nextState = {
+                ...state,
+                proceedWithGroupCreation: proceedWithGroupCreation
+            }
+            return nextState;
+        }
+
+        case 'SET_GROUP_NAME': {
+            let nextState;
+            nextState = {
+                ...state,
+                inputValueForGroup: action.payload
+            }
+            return nextState;
+        }
+
+        case 'RESET_GROUP_VALIDATION_STATE': {
+            let nextState
+            nextState = {
+                ...state,
+                proceedWithGroupCreation: false,
+                inputValueForGroup: 'New Group'
+            }
             return nextState;
         }
 

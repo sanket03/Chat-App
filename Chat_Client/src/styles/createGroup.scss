@@ -1,0 +1,42 @@
+#create-group-interface {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    
+    #group-name-input {
+        width: 50%;
+        border: none;
+        border-bottom: 1px solid;
+    }
+
+    #group-name-input:focus {
+        outline: none;
+    }
+
+    #selected-users-list {
+        width: 80%;
+    }
+
+    #searchable-users-list {
+        width: 80%;
+        margin-top: 20px;
+
+        input {
+            width: 100%;
+        }
+
+        ul {
+            padding: 0;        }
+    }
+
+    .btn-secondary {
+        position: absolute;
+        bottom: 10%;
+    }
+
+    .invalid {
+        border-bottom-color: #FF0000 !important;
+    }
+}

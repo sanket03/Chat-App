@@ -5,43 +5,12 @@ import PropTypes from 'prop-types';
 
 import config from '../utilities/config';
 import chatActions from '../actions/chatActions';
-import groupActions from '../actions/groupActions';
 import UserListInterface from '../components/userListInterface.jsx';
 
 class UserList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.socket = config.socket;
-    }
-
-    componentWillMount() {
-        let { addUserToGroup, 
-              removeUserFromGroup, 
-              setDefaultGroup, 
-              setActiveChatState, 
-              nickname } = this.props;
-        
-        // Add user to default group
-        this.socket.on('setActiveUsersList', (groupName, groupId, usersList, admin) => {
-            addUserToGroup(groupName, groupId, usersList, admin);
-            setActiveChatState(groupId, groupName);    
-            setDefaultGroup(groupId);
-        });
-        
-        // Update active users list when a new user gets connected
-        this.socket.on('newUserJoined', (groupName, groupId, connectedUser, admin) => {
-            addUserToGroup(groupName, groupId, [connectedUser], admin); 
-            setDefaultGroup(groupId);
-        });
-
-        // Update active users list when user is disconnected
-        this.socket.on('userDisconnected', (groupsList, nickname) => {
-            removeUserFromGroup(groupsList, nickname);
-        });
-
-        // Fetch list of active users
-        this.socket.emit('getActiveUsersList');
     }
 
     // Update unseen chat count 
@@ -96,6 +65,7 @@ class UserList extends React.Component {
     }
 }
 
+// Map store states to props
 const mapStateToProps = ({conversationListReducer, loginReducer, chatroomReducer}) => {
     return {
         isCollapsed: conversationListReducer.isCollapsed,
@@ -106,24 +76,9 @@ const mapStateToProps = ({conversationListReducer, loginReducer, chatroomReducer
     }
 }
 
+// Map redux actions to props
 const mapDispatchToProps = (dispatch) => {
     return {
-        addUserToGroup: (groupName, groupId, usersList, admin) => {
-            dispatch(groupActions.addUserToGroup(groupName, groupId, usersList, admin));
-        },
-
-        removeUserFromGroup: (groupsList, nickname) => {
-            dispatch(groupActions.removeUserFromGroup(groupsList, nickname));
-        },
-   
-        setDefaultGroup: (groupId) => {
-            dispatch(groupActions.setDefaultGroup(groupId));
-        },
-
-        setActiveChatState: (id, name) => {
-            dispatch(chatActions.setActiveChatState(id, name));
-        },
-
         toggleCollapse: () => {
             dispatch(chatActions.toggleCollapse());
         },
@@ -131,6 +86,10 @@ const mapDispatchToProps = (dispatch) => {
         updateUnseenMsgCount: (chatId, type) => {
             dispatch(chatActions.updateUnseenMsgCount(chatId, type));
         },
+
+        setActiveChatState: (id, name) => {
+            dispatch(chatActions.setActiveChatState(id, name));
+        }
     }
 }
 

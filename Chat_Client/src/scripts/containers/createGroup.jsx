@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import config from '../utilities/config';
+import {Redirect} from 'react-router-dom';
 
 import groupActions from '../actions/groupActions';
 import CreateGroupInterface from '../components/createGroupInterface.jsx';
@@ -10,28 +11,38 @@ class CreateGroup extends React.Component {
     constructor(props) {
         super(props);
         this.userList;
-        this.groupNameRef;
+        this.isValidInput;
+        this.activeUsersCount;
         this.searchStringRef;
         this.socket = config.socket;
         this.filterUserList = this.filterUserList.bind(this);
         this.toggleUserSelection = this.toggleUserSelection.bind(this);
         this.createGroup = this.createGroup.bind(this);
+        this.setGroupName = this.setGroupName.bind(this);
+        this.setActiveUsersCount = this.setActiveUsersCount.bind(this);
     }
 
     // Get default list of users without search filter
     componentWillMount() {
-        let {   initializeSearchResult,
-                addUserToGroup  } = this.props;
-
-        initializeSearchResult();
-
-        // Add new group to groups list
-        this.socket.on('newGroupCreated', ({groupName, groupId, groupMembers, admin}) => {
-            addUserToGroup(groupName, groupId, groupMembers, admin);
-        })
+        this.props.initializeSearchResult();
+        this.setActiveUsersCount();
     }
 
-    // Filter user list on the basis of search search searchString
+    // Create group only if group name is valid
+    componentWillUpdate(nextProps) {
+        nextProps.proceedWithGroupCreation && this.createGroup();
+    }
+
+    // Set active users count 
+    setActiveUsersCount() {
+        let {
+            defaultGroup,
+            userGroups
+        } = this.props;
+        this.activeUsersCount = [...userGroups[defaultGroup].get('members')].length;
+    }
+
+    // Filter user list on the basis of search string
     filterUserList() {
         let searchResult = this.searchStringRef.value;
         this.props.filterUserList(searchResult);
@@ -41,56 +52,81 @@ class CreateGroup extends React.Component {
     toggleUserSelection(event) {
         let user;
         user = event.currentTarget.id;
-        this.props.toggleUserSelection(user)
+        this.props.toggleUserSelection(user);
     }
 
     // Create new group with selected members
     createGroup() {
-        let groupName, groupMembers, admin;
-        groupName = this.groupNameRef.value;
-        groupMembers = this.props.selectedUsers;
-        admin = this.props.admin;
+        let groupName,
+            {   selectedUsers: groupMembers,
+                admin,
+                inputValueForGroup
+            } = this.props;
+        groupName = inputValueForGroup;
         groupMembers.push(admin);
 
         // Emit event to service that a new group is being created
         this.socket.emit('createGroup', {groupName, groupMembers, admin});
     }
- 
+
+    // Set state for input box while typing group name
+    setGroupName(event) {
+        this.props.setGroupName(event.target.value);
+    }
+  
     render() {
         let { filterUserList, 
               searchResult, 
               selectedUsers,
+              validateGroupCreation,
+              proceedWithGroupCreation,
+              inputValueForGroup,
               admin } = this.props;
-        return (
-            <CreateGroupInterface 
-                userList = {searchResult}
-                selectedUsers = {selectedUsers}
-                admin = {admin}
-                toggleUserSelection = {this.toggleUserSelection}
-                createGroup = {this.createGroup}
-            >
-                <input placeholder = 'Conversation Name' 
-                       required = 'true' 
-                       ref = {(input) => this.groupNameRef = input}
-                />
-                <input placeholder = 'Search users' 
-                       ref = {(input) => this.searchStringRef = input}
-                       onKeyUp = {this.filterUserList}
-                />
-            </CreateGroupInterface>
-        )
+
+        if(!proceedWithGroupCreation) {
+            return (
+                <CreateGroupInterface 
+                    userList = {searchResult}
+                    selectedUsers = {selectedUsers}
+                    admin = {admin}
+                    inputValueForGroup = {inputValueForGroup}
+                    createGroup = {validateGroupCreation}
+                    toggleUserSelection = {this.toggleUserSelection}
+                    setGroupName = {this.setGroupName}
+                    activeUsersCount = {this.activeUsersCount}
+                >
+                    <input placeholder = 'Search users' 
+                           ref = {(input) => this.searchStringRef = input}
+                           onKeyUp = {this.filterUserList}
+                    />
+                </CreateGroupInterface>)
+        } else {
+                return (<Redirect to = {'/chat'} />)
+        }
+    }
+
+    // Reset selected members list and group validation state
+    componentWillUnmount() {
+        let {resetGroupValidationState, resetSelectedMembers} = this.props;
+        resetSelectedMembers();
+        resetGroupValidationState();
     }
 }
 
+// Map store states to props
 const mapStateToProps = ({conversationListReducer, loginReducer}) => {
     return {
         admin: loginReducer.nickname,
-        userGroups: conversationListReducer.userGroups,
         searchResult: conversationListReducer.searchResult,
-        selectedUsers: conversationListReducer.selectedUsers
+        selectedUsers: conversationListReducer.selectedUsers,
+        proceedWithGroupCreation: conversationListReducer.proceedWithGroupCreation,
+        inputValueForGroup: conversationListReducer.inputValueForGroup,
+        userGroups: conversationListReducer.userGroups,
+        defaultGroup: conversationListReducer.defaultGroup
     }
 }
 
+// Map redux actions to props
 const mapDispatchToProps = (dispatch) => {
     return {
         toggleUserSelection: (user) => {
@@ -105,8 +141,20 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(groupActions.filterUserList(searchString));
         },
 
-        addUserToGroup: (groupName, groupId, usersList, admin) => {
-            dispatch(groupActions.addUserToGroup(groupName, groupId, usersList, admin));
+        validateGroupCreation: () => {
+            dispatch(groupActions.validateGroupCreation());
+        },
+
+        setGroupName: (value) => {
+            dispatch(groupActions.setGroupName(value));
+        },
+
+        resetSelectedMembers: () => {
+            dispatch(groupActions.resetSelectedMembers());
+        },
+         
+        resetGroupValidationState: () => {
+            dispatch(groupActions.resetGroupValidationState());
         }
     }
 }
@@ -114,9 +162,11 @@ const mapDispatchToProps = (dispatch) => {
 // Typechecking for prop types
 CreateGroup.propTypes = {
     admin: PropTypes.string,
-    userGroups: PropTypes.object,
     searchResult: PropTypes.array,
-    selectedUsers: PropTypes.array
+    selectedUsers: PropTypes.array,
+    proceedWithGroupCreation: PropTypes.bool,
+    userGroups: PropTypes.object,
+    defaultGroup: PropTypes.string
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateGroup);

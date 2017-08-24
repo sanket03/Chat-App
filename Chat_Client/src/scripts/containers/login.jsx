@@ -40,6 +40,7 @@ class Login extends React.Component {
      }
 }
 
+// Map store states to props
 const mapStateToProps  = ({loginReducer}) =>  {
     return {
         proceedToChat : loginReducer.proceedToChat,
@@ -47,6 +48,7 @@ const mapStateToProps  = ({loginReducer}) =>  {
     }
 }
 
+// Map redux actions to props
 const mapDispatchToProps = (dispatch) => {
     return {
         redirectUser: (shouldRedirectUser, nickname) => {

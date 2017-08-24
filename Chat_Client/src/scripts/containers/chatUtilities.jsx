@@ -71,6 +71,7 @@ class ChatUtilities extends React.Component {
     }
 }
 
+// Map store states to props
 const mapStateToProps = ({chatroomReducer, loginReducer, conversationListReducer}) => {
     return {
         activeChat: chatroomReducer.activeChat,
@@ -79,6 +80,7 @@ const mapStateToProps = ({chatroomReducer, loginReducer, conversationListReducer
     }
 }
 
+// Map redux actions to props
 const mapDispatchToProps = (dispatch) => {
     return {
         updateMessageList: (chatId, senderMsgpair) => {
