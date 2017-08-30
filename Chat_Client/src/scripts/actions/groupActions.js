@@ -41,6 +41,12 @@ const groupActions = (() => {
             payload: value
         }),
 
+        // Set selected members while managing group
+        setSelectedMembers: (groupId) => ({
+            type: 'SET_SELECTED_MEMBERS',
+            payload: groupId
+        }),
+
         // Reset validation state for creating group
         resetGroupValidationState: () => ({
             type: 'RESET_GROUP_VALIDATION_STATE'

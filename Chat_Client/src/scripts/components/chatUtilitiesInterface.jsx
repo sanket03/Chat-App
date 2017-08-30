@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Redirect, Link} from 'react-router-dom';
 
-import ManageGroup from '../containers/manageGroup.jsx';
-import CreateGroup from '../containers/createGroup.jsx';
-
 const ChatUtilitiesInterface  = (props) => {
 
     return (
@@ -12,7 +9,7 @@ const ChatUtilitiesInterface  = (props) => {
             <div className = 'col-lg-12 col-md-12'>
                 <div className = 'input-group'>
                     {props.children}
-                    <span className = {props.isGroup ? 'input-group-btn' : 'input-group-btn disable'}>
+                    <span className = {props.isGroup && props.isAdmin ? 'input-group-btn' : 'input-group-btn disable'}>
                         <button className = 'btn' type = 'button'>
                             <Link to = '/chat/manageGroup'>
                                 <i className="fa fa-users" aria-hidden="true"></i>

@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 
 import '../../styles/createGroup.scss';
 
-const CreateGroupInterface = (props) => {
+const GroupManagementInterface = (props) => {
     let {   createGroup,
             inputValueForGroup,
             setGroupName,
-            activeUsersCount
+            activeUsersCount,
+            routeType
         } = props;
 
     // Render list of users
@@ -46,8 +47,8 @@ const CreateGroupInterface = (props) => {
                                                 :
                                                     (
                                                         <span>No results to display</span>
-                                                    )}
-                        
+                                                    )
+                        }           
                     </div>
                 )
         return element;
@@ -66,17 +67,46 @@ const CreateGroupInterface = (props) => {
                                      :
                                         <span>There are no active users</span>
             }
-            <button type = 'button'
-                    className = 'btn btn-secondary'
-                    onClick = {createGroup}
-            >
-                Create group
-            </button>
+            <div id = 'button-container'>
+                {
+                    routeType === 'create-group' &&
+                                                    <button type = 'button'
+                                                            title ='Create Group'
+                                                            className = 'btn btn-secondary'
+                                                            onClick = {createGroup}
+                                                    >
+                                                        <i className = 'fa fa-plus' aria-hidden = 'true'></i>
+                                                    </button>
+                }
+
+                {
+                    routeType === 'manage-group' &&
+                                                    <button type = 'button'
+                                                            title ='Save Changes'
+                                                            className = 'btn btn-secondary'
+                                                            onClick = {''}
+                                                    >
+                                                        <i className = 'fa fa-pencil-square-o' aria-hidden = 'true'></i>
+                                                    </button>
+                }
+
+                {
+                    routeType === 'manage-group' &&     
+                                                    <button type = 'button'
+                                                            title ='Delete Group'
+                                                            className = 'btn btn-secondary'
+                                                            onClick = {''}
+                                                    >
+                                                        <i className = 'fa fa-trash' aria-hidden = 'true'></i>
+                                                    </button>
+
+                }      
+            </div>
         </div>
     )
 }
 
-CreateGroupInterface.propTypes = {
+GroupManagementInterface.propTypes = {
     admin: PropTypes.string,
     activeUserCount: PropTypes.number,
     selectedUsers: PropTypes.array,
@@ -84,4 +114,4 @@ CreateGroupInterface.propTypes = {
     toggleUserSelection: PropTypes.func
 }
 
-export default CreateGroupInterface;
+export default GroupManagementInterface;

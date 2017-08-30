@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import ManageGroup from './manageGroup.jsx';
-import CreateGroup from './createGroup.jsx';
 import Chatroom from '../components/chatroom.jsx';
 import config from '../utilities/config';
 import chatActions from '../actions/chatActions';
@@ -73,8 +72,8 @@ class ChatroomRoutes extends React.Component {
             <div className = 'row'>
                 <div className = 'col-md-6 col-sm-9 col-10' id = 'chat-container'>
                     <Route exact path = '/chat' render = {() => (<Chatroom/>)}/>
-                    <Route path = '/chat/manageGroup' render = {() => (<ManageGroup/>)}/>
-                    <Route path = '/chat/createGroup' render = {() => (<CreateGroup/>)}/>
+                    <Route path = '/chat/manageGroup' render = {() => (<ManageGroup routeType = 'manage-group'/>)}/>
+                    <Route path = '/chat/createGroup' render = {() => (<ManageGroup routeType = 'create-group'/>)}/>
                 </div>
             </div>
         );

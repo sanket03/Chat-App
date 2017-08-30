@@ -6,7 +6,7 @@ const conversationListReducer = (
                 selectedUsers: [],
                 defaultGroup: '',
                 proceedWithGroupCreation: false,
-                inputValueForGroup: 'New Group'
+                inputValueForGroup: 'New Group',             
             }, action) => {
 
     switch(action.type) {
@@ -63,9 +63,9 @@ const conversationListReducer = (
         }
 
         case 'FILTER_USER_LIST': {
-            let nextState, 
+            let nextState,
+                searchResult,
                 userList = [...state.userGroups[state.defaultGroup].get('members')],
-                searchResult = [...state.searchResult],
                 searchString = action.payload;
             
             if(searchString.length === 0) {
@@ -77,6 +77,19 @@ const conversationListReducer = (
                 ...state,
                 searchResult: searchResult
             };
+            return nextState;
+        }
+
+        case 'SET_SELECTED_MEMBERS': {
+            let nextState,
+                selectedUsers,
+                userGroups = state.userGroups;
+            
+            selectedUsers = [...userGroups[action.payload].get('members')];
+            nextState = {
+                ...state,
+                selectedUsers: selectedUsers
+            }
             return nextState;
         }
 
