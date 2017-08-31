@@ -38,6 +38,51 @@ const chatroomEvents = () => {
             addMembersToGroup(groupObj, groupId, chat);
         },
 
+        // Edit already created group
+        editGroup: (client, chat, groupObj) => {
+            let currentMembers, admin, memberIds = [],
+                {
+                    groupName,
+                    groupId,
+                    groupMembers
+                } = groupObj,
+                {
+                    io,
+                    groupList,
+                    userList
+                } = chat;
+            
+            memberIds = groupMembers.map((member) => {
+                return userList.get(member);
+            })
+            memberIds = new Set(memberIds);
+
+            // Allow editing only if the user is admin of the group
+            // To prevent debug hacking
+            admin = groupList.get(groupId);
+            groupObj[admin] = admin;
+            if(userList.get(admin) === client.id) {
+                currentMembers = Object.keys(io.sockets.adapter.rooms[groupId].sockets);
+
+                // Remove the unselected members
+                currentMembers.forEach((member) => {              
+                    if(memberIds.has(member)) {
+                        memberIds.delete(member);
+                    }  else {
+                        io.sockets.connected[member].leave(groupId);
+                    }
+                });
+
+                // add new members to the room
+                [...memberIds].forEach((newMember) => {
+                    io.sockets.connected[newMember].join(groupId);
+                });
+
+                // Emit event to the client
+                client.broadcast.to(groupId).emit('groupEdited', groupObj);
+            }
+        },
+
         // Emit event to the server notifying user has disconnected
         userDisconnected: (client, {userList}) => {
             let disconnectedUser,

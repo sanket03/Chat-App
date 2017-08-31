@@ -54,6 +54,11 @@ class ChatroomRoutes extends React.Component {
             admin === nickname && setActiveChatState(groupId, groupName); 
         })
 
+        // Edit group
+        this.socket.on('groupEdited', ({groupName, groupId, groupMembers, admin}) => {
+            addUserToGroup(groupName, groupId, groupMembers, admin,'editGroup');
+        })
+
         // Receive response from individual client
         this.socket.on('responseToClientMsg', ({sender, message}) => {
             updateMessageList(sender, {[sender]: message});
@@ -91,8 +96,8 @@ const mapStateToProps = ({loginReducer, chatroomReducer}) => {
 // Map redux actions to props
 const mapDispatchToProps = (dispatch) => {
     return {
-        addUserToGroup: (groupName, groupId, usersList, admin) => {
-            dispatch(groupActions.addUserToGroup(groupName, groupId, usersList, admin));
+        addUserToGroup: (groupName, groupId, usersList, admin,type) => {
+            dispatch(groupActions.addUserToGroup(groupName, groupId, usersList, admin,type));
         },
 
         removeUserOnDisconnection: (groupsList, nickname) => {

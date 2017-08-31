@@ -19,7 +19,10 @@ chat.io.on('connection',(client) => {
     client.on('clientMessage', (msgObject) => { chatroomEvents.sendMessage(client, chat, msgObject); });
 
     // Create new group
-    client.on('createGroup', (groupObj) => { chatroomEvents.createGroup(client, chat, groupObj)})
+    client.on('createGroup', (groupObj) => { chatroomEvents.createGroup(client, chat, groupObj)});
+
+    // Edit group
+    client.on('editGroup', (groupObj) => { chatroomEvents.editGroup(client, chat, groupObj)})
 
     // Broadcast to all the users that client has disconnected
     client.on('disconnecting', () => { chatroomEvents.userDisconnected(client, chat); });

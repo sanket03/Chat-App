@@ -13,14 +13,20 @@ const conversationListReducer = (
 
         case 'ADD_USER_TO_GROUP': {
             let nextState, updatedMembers, userGroups, currentMembers, intendedGroup,
-                {groupName, groupId, usersList, admin} = action.payload;
+                {groupName, groupId, usersList, admin,type} = action.payload;
 
             userGroups = {...state.userGroups};
 
             if(userGroups.hasOwnProperty(groupId)) {
                 intendedGroup = new Map([...userGroups[groupId]]);
-                currentMembers = [...intendedGroup.get('members')];
-                updatedMembers = new Set([...currentMembers,...usersList]);
+                if(!!type && type === 'editGroup') {
+                    updatedMembers = new Set([...usersList]);
+                    intendedGroup.set('groupName', groupName);
+                } else {
+                    currentMembers = [...intendedGroup.get('members')];
+                    updatedMembers = new Set([...currentMembers,...usersList]);
+                }
+                
             } else {
                 updatedMembers = new Set(usersList);
                 userGroups[groupId] = new Map();
@@ -28,7 +34,7 @@ const conversationListReducer = (
                 intendedGroup.set('groupName', groupName);
                 intendedGroup.set('admin', admin);
             }
-
+            
             intendedGroup.set('members', updatedMembers);
             userGroups[groupId] = intendedGroup;
             nextState = {
@@ -37,6 +43,7 @@ const conversationListReducer = (
             };
             return nextState;
         }
+        
 
         case 'REMOVE_USER_ON_DISCONNECTION' : {
             let nextState, userGroups, intendedGroup, groupMembers, groupId,

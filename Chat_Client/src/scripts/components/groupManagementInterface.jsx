@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import '../../styles/createGroup.scss';
 
 const GroupManagementInterface = (props) => {
-    let {   createGroup,
+    let {   groupActions,
             inputValueForGroup,
             setGroupName,
             activeUsersCount,
@@ -73,7 +73,7 @@ const GroupManagementInterface = (props) => {
                                                     <button type = 'button'
                                                             title ='Create Group'
                                                             className = 'btn btn-secondary'
-                                                            onClick = {createGroup}
+                                                            onClick = {groupActions}
                                                     >
                                                         <i className = 'fa fa-plus' aria-hidden = 'true'></i>
                                                     </button>
@@ -84,7 +84,7 @@ const GroupManagementInterface = (props) => {
                                                     <button type = 'button'
                                                             title ='Save Changes'
                                                             className = 'btn btn-secondary'
-                                                            onClick = {''}
+                                                            onClick = {groupActions}
                                                     >
                                                         <i className = 'fa fa-pencil-square-o' aria-hidden = 'true'></i>
                                                     </button>

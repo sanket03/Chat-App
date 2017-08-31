@@ -5,6 +5,7 @@ import config from '../utilities/config';
 import {Redirect} from 'react-router-dom';
 
 import groupActions from '../actions/groupActions';
+import chatActions from '../actions/chatActions';
 import GroupManagementInterface from '../components/groupManagementInterface.jsx';
 
 class ManageGroup extends React.Component {
@@ -49,14 +50,6 @@ class ManageGroup extends React.Component {
         this.groupName = routeType === 'manage-group' ? activeChat.chatName : inputValueForGroup;
     }
 
-    // Create group only if group name is valid
-    componentWillUpdate(nextProps) {
-        if(nextProps.inputValueForGroup !== this.props.inputValueForGroup) {
-            this.groupName = nextProps.inputValueForGroup;
-        }
-        nextProps.proceedWithGroupCreation && this.createGroup();
-    }
-
     // Filter user list on the basis of search string
     filterUserList() {
         let searchResult = this.searchStringRef.value;
@@ -68,6 +61,11 @@ class ManageGroup extends React.Component {
         let user;
         user = event.currentTarget.id;
         this.props.toggleUserSelection(user);
+    }
+
+    // Set state for input box while typing group name
+    setGroupName(event) {
+        this.props.setGroupName(event.target.value);
     }
 
     // Create new group with selected members
@@ -84,9 +82,39 @@ class ManageGroup extends React.Component {
         this.socket.emit('createGroup', {groupName, groupMembers, admin});
     }
 
-    // Set state for input box while typing group name
-    setGroupName(event) {
-        this.props.setGroupName(event.target.value);
+    // Edit group
+    editGroup() {
+        let groupName,
+            groupId,
+        {
+            admin,
+            selectedUsers:groupMembers,
+            activeChat,
+            inputValueForGroup,
+            setActiveChatState,
+            addUserToGroup
+        } = this.props;
+        
+        groupName = inputValueForGroup;
+        groupId = activeChat.chatId;
+
+        //Emit event to server in order to make changes to the group
+        this.socket.emit('editGroup',{groupId, groupName, groupMembers});
+        setActiveChatState(groupId, groupName);
+        addUserToGroup(groupName, groupId, groupMembers, admin,'editGroup');
+    }
+
+    // Create group only if group name is valid
+    componentWillUpdate(nextProps) {
+        if(nextProps.inputValueForGroup !== this.props.inputValueForGroup) {
+            this.groupName = nextProps.inputValueForGroup;
+        }
+        if(nextProps.proceedWithGroupCreation) { 
+            this.props.routeType === 'create-group' ?
+                                           this.createGroup()
+                                         :
+                                           this.editGroup()
+        }
     }
   
     render() {
@@ -104,7 +132,7 @@ class ManageGroup extends React.Component {
                     userList = {searchResult}
                     admin = {admin}
                     routeType = {routeType}
-                    createGroup = {validateGroupCreation}
+                    groupActions = {validateGroupCreation}
                     inputValueForGroup = {this.groupName}
                     selectedUsers = {selectedUsers}
                     toggleUserSelection = {this.toggleUserSelection}
@@ -172,7 +200,15 @@ const mapDispatchToProps = (dispatch) => {
          
         resetGroupValidationState: () => {
             dispatch(groupActions.resetGroupValidationState());
-        }
+        },
+
+        setActiveChatState: (id, name) => {
+            dispatch(chatActions.setActiveChatState(id, name));
+        },
+
+        addUserToGroup: (groupName, groupId, usersList, admin, type) => {
+            dispatch(groupActions.addUserToGroup(groupName, groupId, usersList, admin, type));
+        },
     }
 }
 
