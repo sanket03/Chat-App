@@ -24,6 +24,12 @@ const chatActions = (() => {
             payload: {chatId, type}
         }),
 
+        // Remove messages for disconnected users and deleted groups
+        removeMessageHistory: (id) => ({
+            type: 'REMOVE_MESSAGE_HISTORY',
+            payload: id
+        }),
+
         // Toggle collapse for conversations tab
         toggleCollapse: () => ({
             type: 'TOGGLE_COLLAPSE'

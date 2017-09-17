@@ -21,11 +21,13 @@ class ChatroomRoutes extends React.Component {
         let {   addUserToGroup, 
                 removeUserOnDisconnection, 
                 setDefaultGroup, 
+                deleteGroup,
                 setActiveChatState, 
                 nickname,
                 updateMessageList, 
                 activeChat, 
-                updateUnseenMsgCount   } = this.props;
+                updateUnseenMsgCount,
+                removeMessageHistory   } = this.props;
 
         // Fetch list of active users
         this.socket.emit('getActiveUsersList');
@@ -46,6 +48,7 @@ class ChatroomRoutes extends React.Component {
         // Update active users list when user is disconnected
         this.socket.on('userDisconnected', (groupsList, nickname) => {
             removeUserOnDisconnection(groupsList, nickname);
+            removeMessageHistory(nickname);
         });
 
         // Add new group to groups list
@@ -57,6 +60,12 @@ class ChatroomRoutes extends React.Component {
         // Edit group
         this.socket.on('groupEdited', ({groupName, groupId, groupMembers, admin}) => {
             addUserToGroup(groupName, groupId, groupMembers, admin,'editGroup');
+        })
+
+        // Delete group
+        this.socket.on('groupDeleted', (groupId) => {
+            deleteGroup(groupId);
+            removeMessageHistory(groupId);
         })
 
         // Receive response from individual client
@@ -86,10 +95,11 @@ class ChatroomRoutes extends React.Component {
 }
 
 // Map store states to props
-const mapStateToProps = ({loginReducer, chatroomReducer}) => {
+const mapStateToProps = ({loginReducer, chatroomReducer, conversationListReducer}) => {
     return {
         nickname: loginReducer.nickname,
-        activeChat: chatroomReducer.activeChat
+        activeChat: chatroomReducer.activeChat,
+        isCollapsed: conversationListReducer.isCollapsed
     }
 }
 
@@ -108,6 +118,10 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(groupActions.setDefaultGroup(groupId));
         },
 
+        deleteGroup: (groupId) => {
+            dispatch(groupActions.deleteGroup(groupId));
+        },
+
         setActiveChatState: (id, name) => {
             dispatch(chatActions.setActiveChatState(id, name));
         },
@@ -118,6 +132,10 @@ const mapDispatchToProps = (dispatch) => {
 
         updateUnseenMsgCount: (chatId, type) => {
             dispatch(chatActions.updateUnseenMsgCount(chatId, type));
+        },
+
+        removeMessageHistory: (id) => {
+            dispatch(chatActions.removeMessageHistory(id));
         }
     }
 }

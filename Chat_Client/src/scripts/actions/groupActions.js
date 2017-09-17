@@ -55,6 +55,12 @@ const groupActions = (() => {
         // Reset selected members
         resetSelectedMembers: () => ({
             type: 'RESET_SELECTED_MEMBERS'
+        }),
+
+        // Delete Group 
+        deleteGroup: (groupId) => ({
+            type: 'DELETE_GROUP',
+            payload: groupId
         })
     }
 })();

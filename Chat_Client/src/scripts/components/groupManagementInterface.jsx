@@ -5,6 +5,7 @@ import '../../styles/createGroup.scss';
 
 const GroupManagementInterface = (props) => {
     let {   groupActions,
+            deleteGroup,
             inputValueForGroup,
             setGroupName,
             activeUsersCount,
@@ -95,7 +96,7 @@ const GroupManagementInterface = (props) => {
                                                     <button type = 'button'
                                                             title ='Delete Group'
                                                             className = 'btn btn-secondary'
-                                                            onClick = {''}
+                                                            onClick = {deleteGroup}
                                                     >
                                                         <i className = 'fa fa-trash' aria-hidden = 'true'></i>
                                                     </button>

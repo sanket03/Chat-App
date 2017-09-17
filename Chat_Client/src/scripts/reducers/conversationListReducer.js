@@ -69,6 +69,17 @@ const conversationListReducer = (
             return nextState;
         }
 
+        case 'DELETE_GROUP': {
+            let nextState,
+                userGroups = {...state.userGroups};
+            delete userGroups[action.payload];
+            nextState = {
+                ...state,
+                userGroups: userGroups
+            }
+            return nextState;
+        }
+
         case 'FILTER_USER_LIST': {
             let nextState,
                 searchResult,

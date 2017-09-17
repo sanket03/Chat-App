@@ -22,11 +22,22 @@ const chatroomEvents = () => {
 
         // Send message to intended group or user
         // If recepient is not present in userList then its a group else its an individual client
-        sendMessage: (client, {userList}, msgObject) => {
-            let {recipient, sender, message} = msgObject;
-            
-            userList.has(recipient) ? client.to(userList.get(recipient)).emit('responseToClientMsg', {sender, message})
-                                    : client.broadcast.to(recipient).emit('responseToGroupMsg', msgObject);
+        sendMessage: (client, {userList, io}, msgObject) => {
+            let room, {recipient, sender, message} = msgObject;
+                
+            if(userList.has(recipient)) { 
+                client.to(userList.get(recipient)).emit('responseToClientMsg', {sender, message})
+            } else {
+                try {
+                    room = Object.keys(io.sockets.adapter.rooms[recipient].sockets);
+                    if(room.includes(client.id)) {
+                        client.broadcast.to(recipient).emit('responseToGroupMsg', msgObject); 
+                    }
+                }
+                catch(exception) {
+                    console.log('User or group is disconnected/deleted');
+                }
+            }
         },
 
         // Assign unique id to the group and add members to the group
@@ -39,18 +50,13 @@ const chatroomEvents = () => {
         },
 
         // Edit already created group
-        editGroup: (client, chat, groupObj) => {
-            let currentMembers, admin, memberIds = [],
+        editGroup: (client, {io, groupList, userList}, groupObj) => {
+            let currentMembers, socketObj, admin, memberIds = [],
                 {
                     groupName,
                     groupId,
                     groupMembers
-                } = groupObj,
-                {
-                    io,
-                    groupList,
-                    userList
-                } = chat;
+                } = groupObj;
             
             memberIds = groupMembers.map((member) => {
                 return userList.get(member);
@@ -69,7 +75,10 @@ const chatroomEvents = () => {
                     if(memberIds.has(member)) {
                         memberIds.delete(member);
                     }  else {
-                        io.sockets.connected[member].leave(groupId);
+                        // Send delete group event to removed members and remove them from group
+                        socketObj = io.sockets.connected[member]
+                        socketObj.leave(groupId);
+                        socketObj.emit('groupDeleted', groupId);
                     }
                 });
 
@@ -81,6 +90,13 @@ const chatroomEvents = () => {
                 // Emit event to the client
                 client.broadcast.to(groupId).emit('groupEdited', groupObj);
             }
+        },
+
+        // Delete Group 
+        deleteGroup: (client, {io}, groupId)  => {
+            let groupMembers;
+            client.broadcast.to(groupId).emit('groupDeleted', groupId);
+            delete io.sockets.adapter.rooms[groupId];
         },
 
         // Emit event to the server notifying user has disconnected

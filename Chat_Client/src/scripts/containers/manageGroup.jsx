@@ -16,12 +16,15 @@ class ManageGroup extends React.Component {
         this.activeUsersCount;
         this.searchStringRef;
         this.groupName;
+        this.shouldDelete = false;
         this.socket = config.socket;
         this.filterUserList = this.filterUserList.bind(this);
         this.toggleUserSelection = this.toggleUserSelection.bind(this);
         this.createGroup = this.createGroup.bind(this);
         this.setGroupName = this.setGroupName.bind(this);
         this.setClassMembers = this.setClassMembers.bind(this);
+        this.deleteGroup = this.deleteGroup.bind(this);
+        this.editGroup = this.editGroup.bind(this);
     }
 
     // Get default list of users without search filter
@@ -104,6 +107,21 @@ class ManageGroup extends React.Component {
         addUserToGroup(groupName, groupId, groupMembers, admin,'editGroup');
     }
 
+    // Delete group
+    deleteGroup() {
+        let chatId,
+            {   activeChat,
+                toggleCollapse,
+                deleteGroup
+            } = this.props;
+        chatId = activeChat.chatId
+        // Emit event to delete the group
+        this.socket.emit('deleteGroup', chatId);
+        this.shouldDelete = true;
+        deleteGroup(chatId);
+        toggleCollapse();
+    }
+
     // Create group only if group name is valid
     componentWillUpdate(nextProps) {
         if(nextProps.inputValueForGroup !== this.props.inputValueForGroup) {
@@ -126,7 +144,7 @@ class ManageGroup extends React.Component {
               routeType,
               admin } = this.props;
 
-        if(!proceedWithGroupCreation) {
+        if(!proceedWithGroupCreation && !this.shouldDelete) {
             return (
                 <GroupManagementInterface 
                     userList = {searchResult}
@@ -134,6 +152,7 @@ class ManageGroup extends React.Component {
                     routeType = {routeType}
                     groupActions = {validateGroupCreation}
                     inputValueForGroup = {this.groupName}
+                    deleteGroup = {this.deleteGroup}
                     selectedUsers = {selectedUsers}
                     toggleUserSelection = {this.toggleUserSelection}
                     setGroupName = {this.setGroupName}
@@ -202,13 +221,22 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(groupActions.resetGroupValidationState());
         },
 
+        addUserToGroup: (groupName, groupId, usersList, admin, type) => {
+            dispatch(groupActions.addUserToGroup(groupName, groupId, usersList, admin, type));
+        },
+        
+        deleteGroup: (groupId) => {
+            dispatch(groupActions.deleteGroup(groupId));
+        },
+
+        toggleCollapse: () => {
+            dispatch(chatActions.toggleCollapse());
+        },
+
         setActiveChatState: (id, name) => {
             dispatch(chatActions.setActiveChatState(id, name));
         },
 
-        addUserToGroup: (groupName, groupId, usersList, admin, type) => {
-            dispatch(groupActions.addUserToGroup(groupName, groupId, usersList, admin, type));
-        },
     }
 }
 

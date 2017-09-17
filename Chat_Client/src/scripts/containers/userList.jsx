@@ -95,7 +95,10 @@ const mapDispatchToProps = (dispatch) => {
 
 // Typechecking for props
 UserList.propTypes = {
-    nickname: PropTypes.string
+    nickname: PropTypes.string,
+    defaultGroup: PropTypes.string,
+    messageObject: PropTypes.object,
+    isCollapsed: PropTypes.bool
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

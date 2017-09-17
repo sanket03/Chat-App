@@ -39,6 +39,17 @@ const chatroomReducer = (state = {activeChat: {}, messageObject: {}}, action) =>
             return nextState;
         }
 
+        case 'REMOVE_MESSAGE_HISTORY': {
+            let nextState,
+                messageObject = {...state.messageObject};
+            delete messageObject[action.payload];
+            nextState = {
+                ...state,
+                messageObject: messageObject
+            }
+            return nextState;
+        }
+
         case 'SET_ACTIVE_CHAT': {
             let nextState,
                 {id,name} = action.payload,
