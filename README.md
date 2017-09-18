@@ -48,6 +48,8 @@ Server starts at 8088 and client at 8080
 **App Features:**
 
 - Instant text messaging to a particular client or to a group
-- New features will be added in future commits **:)**
+- Creation of groups
+- Adding and Removing members from a group
+- Deletion of groups
 
  
