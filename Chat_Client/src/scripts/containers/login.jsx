@@ -24,15 +24,25 @@ class Login extends React.Component {
 
     // Emit server event to check whether the nickname is available
     setNickName(event) {
+        let isNicknameValidated, nickname;
+        nickname = this.userNameRef.value.trim();
         if(event.which === 13) {
-            this.socket.emit('setNickname',this.userNameRef.value);
+            isNicknameValidated = nickname.search(/^\S{1,10}$/) === 0 ? true : false;
+            this.props.setValidationState(isNicknameValidated);
+            if(isNicknameValidated) {
+                this.socket.emit('setNickname',nickname);
+            }
         }
     }
 
      render() {
-         let {proceedToChat , rerender} = this.props;
+         let {proceedToChat , rerender, isNicknameValidated} = this.props;
          return (
-             <LoginInterface rerender = {rerender} proceedToChat = {proceedToChat}>
+             <LoginInterface 
+                rerender = {rerender} 
+                proceedToChat = {proceedToChat}
+                isNicknameValidated = {isNicknameValidated}
+            >
                 <input ref = {(input) => this.userNameRef = input} 
                        onKeyPress = {this.setNickName}/>
              </LoginInterface>
@@ -44,7 +54,8 @@ class Login extends React.Component {
 const mapStateToProps  = ({loginReducer}) =>  {
     return {
         proceedToChat : loginReducer.proceedToChat,
-        rerender : loginReducer.rerender
+        rerender : loginReducer.rerender,
+        isNicknameValidated: loginReducer.isNicknameValidated
     }
 }
 
@@ -53,6 +64,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         redirectUser: (shouldRedirectUser, nickname) => {
             dispatch(chatActions.redirectUser(shouldRedirectUser, nickname));
+        },
+
+        setValidationState: (validationState) => {
+            dispatch(chatActions.setValidationState(validationState))
         }
     } 
 }
@@ -60,7 +75,8 @@ const mapDispatchToProps = (dispatch) => {
 // Typechecking for props
 Login.propTypes = {
     proceedToChat: PropTypes.bool,
-    rerender: PropTypes.bool
+    rerender: PropTypes.bool,
+    isNicknameValidated: PropTypes.bool
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Login);

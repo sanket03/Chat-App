@@ -6,7 +6,11 @@ import '../../styles/login.scss';
 
 const LoginInterface = (props) => {
 
-    let {proceedToChat , rerender} = props;
+    let {
+            proceedToChat, 
+            rerender, 
+            isNicknameValidated
+        } = props;
 
     return(
         <div className = 'container' id = 'login-container'>
@@ -20,7 +24,7 @@ const LoginInterface = (props) => {
                 {props.children}
             </div>
 
-            {rerender ? <RedirectToChat proceedToChat = {proceedToChat}/> : ''}
+            {rerender && <RedirectToChat proceedToChat = {proceedToChat} isNicknameValidated = {isNicknameValidated}/>}
 
             <div className = {rerender ? 'slideup' : ''} id = 'tech-stack'>
                 <span>Powered By: </span>

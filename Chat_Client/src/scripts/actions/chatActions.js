@@ -6,6 +6,12 @@ const chatActions = (() => {
             payload: {shouldRedirectUser, nickname}
         }),
 
+        // Validate nickname
+        setValidationState: (nickname) => ({
+            type: 'SET_VALIDATION_STATE',
+            payload: nickname
+        }),
+
         // Set active chat state
         setActiveChatState: (id, name) => ({
             type: 'SET_ACTIVE_CHAT',
@@ -33,7 +39,7 @@ const chatActions = (() => {
         // Toggle collapse for conversations tab
         toggleCollapse: () => ({
             type: 'TOGGLE_COLLAPSE'
-        }),
+        })
     }
 })();
 

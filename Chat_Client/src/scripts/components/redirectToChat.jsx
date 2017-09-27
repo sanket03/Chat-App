@@ -5,8 +5,11 @@ import PropTypes from 'prop-types';
 const RedirectToChat = (props) => {
 
     return (
-        props.proceedToChat ? <Redirect to = {'/chat'}/> 
-                            : <div id = 'duplicate-nickname-alert'>Nickname not available. Choose another</div>
+        props.isNicknameValidated ?
+                                    props.proceedToChat ? <Redirect to = {'/chat'}/> 
+                                                        : <div className = 'login-alerts'>Nickname not available. Choose another</div>
+                                  :
+                                    <div className = 'login-alerts'>Invalid nickname, No spaces buddy</div>
     );
 }
 
